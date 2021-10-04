@@ -34,7 +34,7 @@ class Game:
         for player in self.Player_list:
             print(f"{player}'s Turn:")
             player.show_hand()
-            while True and player.value <= 24:
+            while player.value <= 24:
                 if not player.check_if_hand_valid():
                     break
                 ans = input('Want to draw? (Y/N): ')

@@ -46,11 +46,6 @@ class Player:
         print(f'{self.name} had {self.hand}')
         print(f'value = {self.value}')
 
-    def show_unblined_card(self):
-        print(f'{self}:')
-        print(f'have: {self.hand[0]}')
-
-
 class Black_Jack_player(Player):
     
     def __init__(self, name):
@@ -81,3 +76,13 @@ class Black_Jack_player(Player):
             ace_count -= 1
 
         return s
+
+    def show_unblined_card(self):
+        print(f'{self}:')
+        print(f'have: {self.hand[0]}')
+
+    def check_if_hand_valid(self):
+        return self.value < 21
+
+    def is_fail(self):
+        return self.value >= 24
