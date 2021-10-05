@@ -62,13 +62,18 @@ class Player:
         '''bet'''
         self.had_bet = money
 
-    def finialize(self, win=False, Draw=False):
+    def finialize(self, win=False):
         '''add bet money o player if win else minus if draw do nothing
         then reset the bet money'''
-        if win:
-            self.money += self.had_bet
-        elif not Draw:
-            self.money -= self.had_bet
+        if win != 'Draw':
+            if win:
+                print(f'{self} win and got {self.had_bet}')
+                self.money += self.had_bet
+            else:
+                print(f'{self} lose and lost {self.had_bet}')
+                self.money -= self.had_bet
+        else:
+            print(f'{self} Draw')
         self.had_bet = 0
 
     def if_win(self, dealer):

@@ -50,12 +50,19 @@ class Game:
     def Draw_all_player(self):
         '''Draw card to all payer'''
         self.show_every_player_card()
+        self.dealer.show_unblined_card()
+        print()
 
         for player in self.Player_list:
             print(f"{player}'s Turn:")
             is_continue = player.draw_one_turn(self)
             if not is_continue:
                 print(f'{player} Drough')
+
+    def finalize(self):
+        for player in self.Player_list:
+            player.finialize(win=player.if_win(self.dealer))
+            
 
 
 def main():
