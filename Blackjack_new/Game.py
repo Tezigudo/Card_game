@@ -49,8 +49,6 @@ class Game:
             is_continue = player.draw_one_turn(self)
             if not is_continue:
                 print(f'{player} Drough')
-            else:
-                print(f'{player} gain')
 
 
 def main():
