@@ -58,8 +58,7 @@ class Game:
             print(f"{player}'s Turn:")
             is_continue = player.draw_one_turn(self)
             if not is_continue:
-                print(f'{player} Drough')
-
+                print(f'{player} Burst')
 
     def finalize(self):
         for player in self.now_player:
@@ -90,3 +89,10 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+'''
+TODO: tomorrow I will fix the bug
+-> input num
+-> test if more than 21 and break then continue
+TODO: finished the game part then fix any bug okey.
+'''

@@ -65,6 +65,7 @@ class Player:
     def finialize(self, win=False):
         '''add bet money o player if win else minus if draw do nothing
         then reset the bet money'''
+
         if win != 'Draw':
             if win:
                 print(f'{self} win and got {self.had_bet}')
@@ -140,7 +141,10 @@ class Black_Jack_player(Player):
 
     def check_if_hand_valid(self):
         '''check whether player value less than 21'''
-        return self.value < 21
+        return self.value < 22
+
+    def blackjack(self):
+        return self.value == 21
 
     def draw_one_turn(self, game):
         '''draw one turn for black jack'''
@@ -156,6 +160,9 @@ class Black_Jack_player(Player):
             else:
                 print('Invalid Input please try again')
             self.show_hand()
+        if self.blackjack():
+            print('black jack')
+            return True
         if not self.check_if_hand_valid():
             return False
         return True
