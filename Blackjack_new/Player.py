@@ -83,6 +83,21 @@ class Player:
         else:
             return self.value > dealer.value
 
+    def call(self):
+        print(f'{self} amount is: {self.money}')
+        try:
+            amount = float(input('Please enter amount to bet: '))
+        except ValueError:
+            print('Invalid input')
+            self.call()
+        if amount < self.money:
+            print('you not have enough amount please try again')
+            self.call()
+        else:
+            self.bet(amount)
+            print(f'{self} have bet: {amount}')
+            print(f'{self} have {self.money} left.')
+
 
 class Black_Jack_player(Player):
     '''create a black jack object that inherit from player'''
@@ -120,7 +135,7 @@ class Black_Jack_player(Player):
     def show_unblined_card(self):
         '''show unblinded card'''
         print(f'{self}:')
-        print(f'have: {self.hand[0]}')
+        print(f'unblind is: {self.hand[0]}')
 
     def check_if_hand_valid(self):
         '''check whether player value less than 21'''

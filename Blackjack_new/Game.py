@@ -29,13 +29,14 @@ class Game:
     def __init__(self, name_list: list[str]):
         self.Player_list = [Black_Jack_player(name) for name in name_list]
         # create an player list
-        self.dealer = computer_player() # create an dealer player
+        self.dealer = computer_player()  # create an dealer player
         self.deck = Card()
         self.deal_card()
 
     def deal_card(self):
         '''deal card to all player'''
         for _ in range(2):
+            self.dealer.draw(self.deck.deck)
             for player in self.Player_list:
                 player.draw(self.deck.deck)
 
@@ -62,7 +63,20 @@ class Game:
     def finalize(self):
         for player in self.Player_list:
             player.finialize(win=player.if_win(self.dealer))
-            
+
+    def call_all(self):
+        for player in self.Player_list:
+            player.call()
+
+    def play(self):
+        self.call_all()
+        self.Draw_all_player()
+        self.finalize()
+        self.show_every_player_card(show_len=True)
+
+    @property
+    def now_player(self):
+        return [player for player in self.Player_list if player.money > 0]
 
 
 def main():
@@ -70,10 +84,8 @@ def main():
     money = float(input('Enter each player money: '))
     Black_Jack_player.set_player_money(money)
     g = Game(['God', 'Tw'])
-    g.Draw_all_player()
-    g.show_every_player_card(show_len=True)
-    for x in g.Player_list:
-        print(x, x.hand)
+    g,play()
+
 
 
 if __name__ == '__main__':
