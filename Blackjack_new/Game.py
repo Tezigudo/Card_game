@@ -51,7 +51,6 @@ class Game:
                 print(f'{player} gain')
 
 
-
 def main():
     money = float(input('Enter each player money: '))
     Black_Jack_player.set_player_money(money)

@@ -1,4 +1,3 @@
-
 class Player:
 
     initial_money = 0
@@ -17,7 +16,7 @@ class Player:
 
     @property
     def value(self):
-        return self.calculate_val()
+        return self.calculate_val
 
     @value.getter
     def calculate_val(self):
@@ -46,15 +45,26 @@ class Player:
         print(f'{self.name} had {self.hand}')
         print(f'value = {self.value}')
 
+    def bet(self, money):
+        self.had_bet = money
+
+    def finialize(self, win=False, Draw=False):
+        if win:
+            self.money += self.had_bet
+        elif not Draw:
+            self.money -= self.had_bet
+        self.had_bet = 0
+
+
 class Black_Jack_player(Player):
-    
+
     def __init__(self, name):
         super().__init__(name)
         self.money = Black_Jack_player.initial_money
 
     @property
     def value(self):
-        return self.calculate_val()
+        return self.calculate_val
 
     @value.getter
     def calculate_val(self):
