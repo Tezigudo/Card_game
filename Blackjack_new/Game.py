@@ -2,12 +2,17 @@ import random
 from Card import Card
 from Player import Black_Jack_player
 from time import sleep
-# class computer_player(Black_Jack_player):
 
-#     num = 0
 
-#     def __init__(self, name):
-#         super().__init__(name)
+class computer_player(Black_Jack_player):
+
+    num = 0
+
+    def __init__(self):
+        super().__init__(self)
+        computer_player.num += 1
+        self.name = 'BOT'+str(computer_player.num)
+
 
 
 class Game:
@@ -25,7 +30,7 @@ class Game:
         for player in self.Player_list:
             player.show_unblined_card()
             if show_len:
-                print(f'Have {len(player.hand)}')
+                print(f'Have {len(player.hand)} Card')
             print()
 
     def Draw_all_player(self):
@@ -33,18 +38,7 @@ class Game:
 
         for player in self.Player_list:
             print(f"{player}'s Turn:")
-            player.show_hand()
-            while player.value <= 24:
-                if not player.check_if_hand_valid():
-                    break
-                ans = input('Want to draw? (Y/N): ')
-                if ans.upper() == 'Y':
-                    player.draw(self.deck.deck, more=True)
-                elif ans.upper() == 'N':
-                    break
-                else:
-                    print('Invalid Input please try again')
-                player.show_hand()
+            player.draw_one_turn()
             if player.is_fail():
                 print(f'{player} Drough')
             else:

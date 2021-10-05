@@ -10,7 +10,7 @@ class Player:
 
     def __str__(self):
         return self.name
-    
+
     def __repr__(self):
         return self.name
 
@@ -54,6 +54,20 @@ class Player:
         elif not Draw:
             self.money -= self.had_bet
         self.had_bet = 0
+
+    def draw_one_turn(self):
+        self.show_hand()
+        while self.value <= 24:
+            if not self.check_if_hand_valid():
+                break
+            ans = input('Want to draw? (Y/N): ')
+            if ans.upper() == 'Y':
+                self.draw(self.deck.deck, more=True)
+            elif ans.upper() == 'N':
+                break
+            else:
+                print('Invalid Input please try again')
+            self.show_hand()
 
 
 class Black_Jack_player(Player):
