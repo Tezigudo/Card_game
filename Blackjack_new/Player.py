@@ -74,6 +74,7 @@ class Player:
                 self.money -= self.had_bet
         else:
             print(f'{self} Draw')
+        print(f'{self} have {self.money} left.')
         self.had_bet = 0
 
     def if_win(self, dealer):
@@ -90,7 +91,7 @@ class Player:
         except ValueError:
             print('Invalid input')
             self.call()
-        if amount < self.money:
+        if amount > self.money:
             print('you not have enough amount please try again')
             self.call()
         else:
@@ -141,14 +142,10 @@ class Black_Jack_player(Player):
         '''check whether player value less than 21'''
         return self.value < 21
 
-    def is_fail(self):
-        '''check whether player value more than 24'''
-        return self.value >= 24
-
     def draw_one_turn(self, game):
         '''draw one turn for black jack'''
         self.show_hand()
-        while self.value <= 24:
+        while self.value <= 21:
             if not self.check_if_hand_valid():
                 break
             ans = input('Want to draw? (Y/N): ')
@@ -159,6 +156,6 @@ class Black_Jack_player(Player):
             else:
                 print('Invalid Input please try again')
             self.show_hand()
-        if self.is_fail():
+        if not self.check_if_hand_valid():
             return False
         return True

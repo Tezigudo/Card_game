@@ -19,7 +19,7 @@ class computer_player(Black_Jack_player):
         '''draw card untill computer hand values more than 17'''
         while self.val < 18:
             self.draw(game.deck.deck)
-        if self.is_fail():
+        if not self.check_if_hand_valid():
             return False
         return True
 
@@ -37,12 +37,12 @@ class Game:
         '''deal card to all player'''
         for _ in range(2):
             self.dealer.draw(self.deck.deck)
-            for player in self.Player_list:
+            for player in self.now_player:
                 player.draw(self.deck.deck)
 
     def show_every_player_card(self, show_len=False):
         '''show every player card unblineded and show the length of it if show_len'''
-        for player in self.Player_list:
+        for player in self.now_player:
             player.show_unblined_card()
             if show_len:
                 print(f'Have {len(player.hand)} Card')
@@ -54,25 +54,26 @@ class Game:
         self.dealer.show_unblined_card()
         print()
 
-        for player in self.Player_list:
+        for player in self.now_player:
             print(f"{player}'s Turn:")
             is_continue = player.draw_one_turn(self)
             if not is_continue:
                 print(f'{player} Drough')
 
+
     def finalize(self):
-        for player in self.Player_list:
+        for player in self.now_player:
             player.finialize(win=player.if_win(self.dealer))
 
     def call_all(self):
-        for player in self.Player_list:
+        for player in self.now_player:
             player.call()
 
     def play(self):
         self.call_all()
         self.Draw_all_player()
-        self.finalize()
         self.show_every_player_card(show_len=True)
+        self.finalize()
 
     @property
     def now_player(self):
@@ -84,8 +85,7 @@ def main():
     money = float(input('Enter each player money: '))
     Black_Jack_player.set_player_money(money)
     g = Game(['God', 'Tw'])
-    g,play()
-
+    g.play()
 
 
 if __name__ == '__main__':
