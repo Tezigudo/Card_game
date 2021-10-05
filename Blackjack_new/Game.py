@@ -12,12 +12,20 @@ class computer_player(Black_Jack_player):
         super().__init__(self)
         computer_player.num += 1
         self.name = 'BOT'+str(computer_player.num)
+        self.money = computer_player.initial_money
 
+    def draw_one_turn(self, game):
+        while self.val < 18:
+            self.draw(game.deck.deck)
+        if self.is_fail():
+            return False
+        return True
 
 
 class Game:
     def __init__(self, name_list: list[str]):
         self.Player_list = [Black_Jack_player(name) for name in name_list]
+        self.dealer = computer_player()
         self.deck = Card()
         self.deal_card()
 
@@ -38,8 +46,8 @@ class Game:
 
         for player in self.Player_list:
             print(f"{player}'s Turn:")
-            player.draw_one_turn()
-            if player.is_fail():
+            is_continue = player.draw_one_turn(self)
+            if not is_continue:
                 print(f'{player} Drough')
             else:
                 print(f'{player} gain')

@@ -29,7 +29,3 @@ class Card:
 
     def reset(self):
         self.deck = self.create_deck()
-
-
-if __name__ == '__main__':
-    pass

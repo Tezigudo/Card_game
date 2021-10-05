@@ -55,19 +55,28 @@ class Player:
             self.money -= self.had_bet
         self.had_bet = 0
 
-    def draw_one_turn(self):
+    def draw_one_turn(self, game):
         self.show_hand()
         while self.value <= 24:
             if not self.check_if_hand_valid():
                 break
             ans = input('Want to draw? (Y/N): ')
             if ans.upper() == 'Y':
-                self.draw(self.deck.deck, more=True)
+                self.draw(game.deck.deck, more=True)
             elif ans.upper() == 'N':
                 break
             else:
                 print('Invalid Input please try again')
             self.show_hand()
+        if self.is_fail():
+            return False
+        return True
+
+    def if_win(self, dealer):
+        if self.value == dealer.value:
+            return 'Draw'
+        else:
+            return self.value > dealer.value
 
 
 class Black_Jack_player(Player):
