@@ -16,7 +16,7 @@ class computer_player(BlackJackPlayer):
 
     def draw_one_turn(self, game):
         """draw card untill computer hand values more than 17"""
-        while self.val <= 17:
+        while self.value <= 17:
             self.draw(game.deck.deck)
             if not self.check_if_hand_valid() or self.blackjack():
                 break
