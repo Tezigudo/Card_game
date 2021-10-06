@@ -208,4 +208,3 @@ class BlackJackPlayer(Player):
             print(f'{self} Draw')
         print(f'{self} have {self.money} left.')
         self.had_bet = 0
-

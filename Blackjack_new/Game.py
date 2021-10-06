@@ -87,7 +87,8 @@ class Game:
         for player in self.Player_list:
             if player.money > 0:
                 player.played = True
-
+            else:
+                player.played = False
 
     def play(self):
         """This Func Use to play one game"""
@@ -101,7 +102,8 @@ class Game:
     @property
     def now_player(self):
         """return an player which not knock(money>=0)"""
-        return [player for player in self.Player_list if player.money > 0 and not player.played]
+        # return [player for player in self.Player_list if player.money > 0 and player.played]
+        return [player for player in self.Player_list if player.played]
 
     def reset(self):
         self.deck.reset()
@@ -112,7 +114,7 @@ class Game:
     def run(self):
         # c.print('welcome', style='blue on white')
         time = 0
-        while self.now_player:
+        while self.now_player or time == 0:
             time += 1
             print(f'round{time}:')
             self.play()
@@ -129,8 +131,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-'''
-TODO : Fix bug
-- 2nd round which player have no amount not loses
-'''
