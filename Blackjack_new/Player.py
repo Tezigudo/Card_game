@@ -64,7 +64,7 @@ class Player:
         self.money -= money
         self.had_bet = money
 
-    def finialize(self, win=False):
+    def finalize(self, win=False):
         """add bet money o player if win else minus if draw do nothing
         then reset the bet money"""
 
@@ -74,11 +74,10 @@ class Player:
                 self.money += self.had_bet*2
             else:
                 print(f'{self} lose and lost {self.had_bet}')
-                self.money -= self.had_bet
         else:
+            self.money += self.had_bet
             print(f'{self} Draw')
         print(f'{self} have {self.money} left.')
-        self.had_bet = 0
 
     def if_win(self, dealer):
         """check whether player value more that dealer value"""
@@ -103,6 +102,10 @@ class Player:
         self.bet(amount)
         print(f'{self} have bet: {amount}')
         print(f'{self} have {self.money} left.')
+
+    def reset(self):
+        self.had_bet = 0
+        self.hand = []
 
 
 class BlackJackPlayer(Player):
@@ -178,7 +181,7 @@ class BlackJackPlayer(Player):
         else:
             return self.value > dealer.value
 
-    def finialize(self, win=None):
+    def finalize(self, win=None):
         """Finalize Blackjack player same func as player"""
 
         match win:
@@ -195,8 +198,9 @@ class BlackJackPlayer(Player):
                 self.money += self.had_bet*2
             else:
                 print(f'{self} lose and lost {self.had_bet}')
-                self.money -= self.had_bet
         else:
+            self.money += self.had_bet
             print(f'{self} Draw')
         print(f'{self} have {self.money} left.')
         self.had_bet = 0
+

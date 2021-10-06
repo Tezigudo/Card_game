@@ -1,6 +1,9 @@
 from Card import Card
 from Player import BlackJackPlayer
 from time import sleep
+# from rich.console import Console
+
+# c = Console()
 
 
 class computer_player(BlackJackPlayer):
@@ -29,7 +32,6 @@ class Game:
         # create an player list
         self.dealer = computer_player()  # create an dealer player
         self.deck = Card()
-        self.deal_card()
 
     def deal_card(self):
         """deal card to all player"""
@@ -55,6 +57,8 @@ class Game:
         for player in self.now_player:
             print(f"{player}'s Turn:")
             player.draw_one_turn(self)
+            print()
+        self.dealer.draw_one_turn(self)
 
     def finalize(self):
         """Finalize the game whether player get money or lose money"""
@@ -69,10 +73,10 @@ class Game:
                 if player.value != 21:
                     player.finalize(win=False)
                 else:
-                    player.finialize(win='Draw')
+                    player.finalize(win='Draw')
         else:
             for player in self.now_player:
-                player.finialize(win=player.if_win(self.dealer))
+                player.finalize(win=player.if_win(self.dealer))
 
     def call_all(self):
         """call all Player"""
@@ -82,6 +86,7 @@ class Game:
     def play(self):
         """This Func Use to play one game"""
         self.call_all()
+        self.deal_card()
         self.Draw_all_player()
         self.show_every_player_card(show_len=True)
         self.finalize()
@@ -91,17 +96,32 @@ class Game:
         """return an player which not knock(money>=0)"""
         return [player for player in self.Player_list if player.money >= 0]
 
+    def reset(self):
+        self.deck.reset()
+        self.dealer.reset()
+        for player in self.Player_list:
+            player.reset()
+
+    def run(self):
+        # c.print('welcome', style='blue on white')
+        time = 0
+        while self.now_player:
+            time += 1
+            print(f'round{time}:')
+            self.play()
+            self.reset()
+        print('_____________________')
+
 
 def main():
     """main func"""
     money = float(input('Enter each player money: '))
     BlackJackPlayer.set_player_money(money)
-    g = Game(['God', 'Tw'])
-    g.play()
+    g = Game(['God', 'Dol'])
+    g.run()
+
 
 
 if __name__ == '__main__':
     main()
-'''
-TODO make an infinite game 
-'''
+
