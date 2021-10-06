@@ -179,8 +179,7 @@ class BlackJackPlayer(Player):
             return self.value > dealer.value
 
     def finialize(self, win=None):
-        """add bet money o player if win else minus if draw do nothing
-        then reset the bet money"""
+        """Finalize Blackjack player same func as player"""
 
         match win:
             case 'Blackjack':

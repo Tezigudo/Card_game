@@ -2,13 +2,13 @@ import random
 
 
 class Card:
-    ''' Card object'''
+    """ Card object"""
     def __init__(self):
         self.deck = self.create_deck()
         self.shuffle()
 
     def create_deck(self) -> list[str]:
-        '''this func create a deck using nested loop'''
+        """this func create a deck using nested loop"""
         deck = []
         for suit in ('Clubs', 'Diamonds', 'Hearts', 'Spades'):
             for val in range(1, 14):
@@ -27,9 +27,9 @@ class Card:
         return deck
 
     def shuffle(self):
-        '''shuffle a deck!'''
+        """shuffle a deck!"""
         random.shuffle(self.deck)
 
     def reset(self):
-        '''reset a deck'''
+        """reset a deck"""
         self.deck = self.create_deck()
