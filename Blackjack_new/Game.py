@@ -17,11 +17,10 @@ class computer_player(Black_Jack_player):
 
     def draw_one_turn(self, game):
         '''draw card untill computer hand values more than 17'''
-        while self.val < 18:
+        while self.val < 17:
             self.draw(game.deck.deck)
-        if not self.check_if_hand_valid():
-            return False
-        return True
+            if not self.check_if_hand_valid() or self.blackjack():
+                break
 
 
 class Game:
@@ -56,13 +55,17 @@ class Game:
 
         for player in self.now_player:
             print(f"{player}'s Turn:")
-            is_continue = player.draw_one_turn(self)
-            if not is_continue:
-                print(f'{player} Burst')
+            player.draw_one_turn(self)
 
     def finalize(self):
-        for player in self.now_player:
-            player.finialize(win=player.if_win(self.dealer))
+        print(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
+        if not self.dealer.check_if_hand_valid():
+            print('Dealer Burst:')
+            for player in self.now_player:
+                player.finalize(win=True)
+        else:
+            for player in self.now_player:
+                player.finialize(win=player.if_win(self.dealer))
 
     def call_all(self):
         for player in self.now_player:
@@ -94,5 +97,4 @@ if __name__ == '__main__':
 TODO: tomorrow I will fix the bug
 -> input num
 -> test if more than 21 and break then continue
-TODO: finished the game part then fix any bug okey.
 '''

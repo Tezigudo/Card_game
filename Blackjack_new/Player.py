@@ -33,12 +33,13 @@ class Player:
         s = 0
         for card in self.hand:
             val = card.split()[0]
-            if val == 'Ace':
-                s += 1
-            elif val in ('King', 'Queen', 'Jack', 'King'):
-                s += 10
-            else:
-                s += int(val)
+            match val:
+                case 'Ace':
+                    s += 1
+                case 'King' | 'Queen' | 'Jack' | 'King':
+                    s += 10
+                case _:
+                    s += int(val)
         return s
 
     @classmethod
@@ -60,6 +61,7 @@ class Player:
 
     def bet(self, money):
         '''bet'''
+        self.money -= money
         self.had_bet = money
 
     def finialize(self, win=False):
@@ -69,7 +71,7 @@ class Player:
         if win != 'Draw':
             if win:
                 print(f'{self} win and got {self.had_bet}')
-                self.money += self.had_bet
+                self.money += self.had_bet*2
             else:
                 print(f'{self} lose and lost {self.had_bet}')
                 self.money -= self.had_bet
@@ -118,12 +120,13 @@ class Black_Jack_player(Player):
         s = ace_count = 0
         for card in self.hand:
             val = card.split()[0]
-            if val == 'Ace':
-                ace_count += 1
-            elif val in ('King', 'Queen', 'Jack', 'King'):
-                s += 10
-            else:
-                s += int(val)
+            match val:
+                case 'Ace':
+                    ace_count += 1
+                case 'King' | 'Queen' | 'Jack' | 'King':
+                    s += 10
+                case _:
+                    s += int(val)
 
         while ace_count:
             if s + 11 <= 23:
@@ -150,7 +153,7 @@ class Black_Jack_player(Player):
         '''draw one turn for black jack'''
         self.show_hand()
         while self.value <= 21:
-            if not self.check_if_hand_valid():
+            if not self.check_if_hand_valid() or self.blackjack():
                 break
             ans = input('Want to draw? (Y/N): ')
             if ans.upper() == 'Y':
@@ -160,9 +163,38 @@ class Black_Jack_player(Player):
             else:
                 print('Invalid Input please try again')
             self.show_hand()
+
+    def if_win(self, dealer):
+        '''check whether player value more that dealer value'''
         if self.blackjack():
-            print('black jack')
-            return True
+            return 'BlackJack'
         if not self.check_if_hand_valid():
-            return False
-        return True
+            return 'Burst'
+        if self.value == dealer.value:
+            return 'Draw'
+        else:
+            return self.value > dealer.value
+
+    def finialize(self, win=None):
+        '''add bet money o player if win else minus if draw do nothing
+        then reset the bet money'''
+
+        match win:
+            case 'Blackjack':
+                print('Black Jack!')
+                win = True
+            case 'Burst':
+                print('Burst')
+                win = False
+
+        if win != 'Draw':
+            if win:
+                print(f'{self} win and got {self.had_bet}')
+                self.money += self.had_bet*2
+            else:
+                print(f'{self} lose and lost {self.had_bet}')
+                self.money -= self.had_bet
+        else:
+            print(f'{self} Draw')
+        print(f'{self} have {self.money} left.')
+        self.had_bet = 0
