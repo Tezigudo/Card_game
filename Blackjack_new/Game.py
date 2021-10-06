@@ -1,7 +1,6 @@
 from Card import Card
 from Player import BlackJackPlayer
 from time import sleep
-from math import inf
 # from rich.console import Console
 
 # c = Console()
@@ -118,16 +117,16 @@ class Game:
             print(f'round{time}:')
             self.play()
             self.reset()
-        print('_____________________\n')
+            print('_____________________\n')
         else:
-            print(f'{self.now_player[0]} wins')
+            print(f'{self.now_player[0]} win')
 
 
 def main():
     """main func"""
     money = float(input('Enter each player money: '))
     BlackJackPlayer.set_player_money(money)
-    g = Game(['God', 'Proud'])
+    g = Game(['God', 'Proud', 'Dol'])
     g.run()
 
 if __name__ == '__main__':
