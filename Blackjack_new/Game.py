@@ -63,6 +63,13 @@ class Game:
             print('Dealer Burst:')
             for player in self.now_player:
                 player.finalize(win=True)
+        elif self.dealer.blackjack():
+            print('Dealer Blackjact!')
+            for player in self.now_player:
+                if player.value != 21:
+                    player.finalize(win=False)
+                else:
+                    player.finialize(win='Draw')
         else:
             for player in self.now_player:
                 player.finialize(win=player.if_win(self.dealer))
@@ -95,7 +102,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 '''
-TODO: tomorrow I will fix the bug
+TODO make an infinite game 
 '''
