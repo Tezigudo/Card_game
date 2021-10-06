@@ -97,6 +97,7 @@ class Game:
         self.Draw_all_player()
         self.show_every_player_card(show_len=True)
         self.finalize()
+        self.set_played()
 
     @property
     def now_player(self):
@@ -117,21 +118,24 @@ class Game:
             print(f'round{time}:')
             self.play()
             self.reset()
-            print('_____________________\n')
+            print('_____________________'*2+'\n')
         else:
-            print(f'{self.now_player[0]} win')
+            try:
+                print(f'{self.now_player[0]} win')
+            except IndexError:
+                print('Dealer win')
 
 
 def main():
     """main func"""
     money = float(input('Enter each player money: '))
     BlackJackPlayer.set_player_money(money)
-    g = Game(['God', 'Proud', 'Dol'])
+    g = Game(['God', 'Tonwan'])
     g.run()
 
 if __name__ == '__main__':
     main()
 
 '''
-TODO: player can bet with zero value
+TODO: main part at tmrw
 '''
