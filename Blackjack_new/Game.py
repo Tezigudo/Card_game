@@ -102,7 +102,6 @@ class Game:
     @property
     def now_player(self):
         """return an player which not knock(money>=0)"""
-        # return [player for player in self.Player_list if player.money > 0 and player.played]
         return [player for player in self.Player_list if player.played]
 
     def reset(self):
@@ -114,20 +113,26 @@ class Game:
     def run(self):
         # c.print('welcome', style='blue on white')
         time = 0
-        while self.now_player or time == 0:
+        while len(self.now_player) > 1 or time == 0:
             time += 1
             print(f'round{time}:')
             self.play()
             self.reset()
         print('_____________________\n')
+        else:
+            print(f'{self.now_player[0]} wins')
 
 
 def main():
     """main func"""
     money = float(input('Enter each player money: '))
     BlackJackPlayer.set_player_money(money)
-    g = Game(['God', 'Dol'])
+    g = Game(['God', 'Proud'])
     g.run()
 
 if __name__ == '__main__':
     main()
+
+'''
+TODO: player can bet with zero value
+'''
