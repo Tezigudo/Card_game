@@ -1,6 +1,7 @@
 from Card import Card
 from Player import BlackJackPlayer
 from time import sleep
+from math import inf
 # from rich.console import Console
 
 # c = Console()
@@ -15,7 +16,6 @@ class computer_player(BlackJackPlayer):
         super().__init__(self)
         computer_player.num += 1
         self.name = 'BOT'+str(computer_player.num)
-        self.money = computer_player.initial_money
 
     def draw_one_turn(self, game):
         """draw card untill computer hand values more than 17"""
@@ -83,8 +83,15 @@ class Game:
         for player in self.now_player:
             player.call()
 
+    def set_played(self):
+        for player in self.Player_list:
+            if player.money > 0:
+                player.played = True
+
+
     def play(self):
         """This Func Use to play one game"""
+        self.set_played()
         self.call_all()
         self.deal_card()
         self.Draw_all_player()
@@ -94,7 +101,7 @@ class Game:
     @property
     def now_player(self):
         """return an player which not knock(money>=0)"""
-        return [player for player in self.Player_list if player.money >= 0]
+        return [player for player in self.Player_list if player.money > 0 and not player.played]
 
     def reset(self):
         self.deck.reset()
@@ -110,7 +117,7 @@ class Game:
             print(f'round{time}:')
             self.play()
             self.reset()
-        print('_____________________')
+        print('_____________________\n')
 
 
 def main():
@@ -120,8 +127,10 @@ def main():
     g = Game(['God', 'Dol'])
     g.run()
 
-
-
 if __name__ == '__main__':
     main()
 
+'''
+TODO : Fix bug
+- 2nd round which player have no amount not loses
+'''

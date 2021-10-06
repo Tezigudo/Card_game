@@ -8,11 +8,13 @@ class Player:
         hand: player's hand
         money: player's money
         had_bet: player's bet
+        played: are play or not
         """
         self.name = name
         self.hand = []
         self.money = Player.initial_money
         self.had_bet = 0
+        self.played = None
 
     def __str__(self):
         """represent Player's name when print player object"""
@@ -90,14 +92,17 @@ class Player:
         print(f'{self} amount is: {self.money}')
         while True:
             amount = input('Please enter amount to bet: ')
-            if amount.isdigit():
+            try:
                 amount = float(amount)
                 if amount > self.money:
                     print('you not have enough amount please try again')
+                elif amount < 0:
+                    raise ValueError('--Negative Amount--')
                 else:
                     break
-            else:
+            except ValueError:
                 print('Invalid Input please try again:')
+            print()
 
         self.bet(amount)
         print(f'{self} have bet: {amount}')
