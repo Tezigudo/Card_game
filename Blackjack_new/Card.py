@@ -3,11 +3,13 @@ import random
 
 class Card:
     """ Card object"""
+
     def __init__(self):
         self.deck = self.create_deck()
         self.shuffle()
 
-    def create_deck(self) -> list[str]:
+    @staticmethod
+    def create_deck() -> list[str]:
         """this func create a deck using nested loop"""
         deck = []
         for suit in ('Clubs', 'Diamonds', 'Hearts', 'Spades'):

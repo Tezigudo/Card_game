@@ -1,23 +1,24 @@
 from Card import Card
 from Player import BlackJackPlayer
-from time import sleep
+
+
 # from rich.console import Console
 
 # c = Console()
 
 
-class computer_player(BlackJackPlayer):
+class ComputerPlayer(BlackJackPlayer):
     """create an computer player for black jack"""
 
     num = 0
 
     def __init__(self):
         super().__init__(self)
-        computer_player.num += 1
-        self.name = 'BOT'+str(computer_player.num)
+        ComputerPlayer.num += 1
+        self.name = 'BOT' + str(ComputerPlayer.num)
 
     def draw_one_turn(self, game):
-        """draw card untill computer hand values more than 17"""
+        """draw card until computer hand values more than 17"""
         while self.value <= 17:
             self.draw(game.deck.deck)
             if not self.check_if_hand_valid() or self.blackjack():
@@ -26,10 +27,11 @@ class computer_player(BlackJackPlayer):
 
 class Game:
     """Entire game object"""
+
     def __init__(self, name_list: list[str]):
         self.Player_list = [BlackJackPlayer(name) for name in name_list]
         # create an player list
-        self.dealer = computer_player()  # create an dealer player
+        self.dealer = ComputerPlayer()  # create an dealer player
         self.deck = Card()
 
     def deal_card(self):
@@ -40,14 +42,14 @@ class Game:
                 player.draw(self.deck.deck)
 
     def show_every_player_card(self, show_len=False):
-        """show every player card unblineded and show the length of it if show_len"""
+        """show every player card unblinded and show the length of it if show_len"""
         for player in self.now_player:
             player.show_unblined_card()
             if show_len:
                 print(f'Have {len(player.hand)} Card')
             print()
 
-    def Draw_all_player(self):
+    def draw_all_player(self):
         """Draw card to all payer"""
         self.show_every_player_card()
         self.dealer.show_unblined_card()
@@ -67,7 +69,7 @@ class Game:
             for player in self.now_player:
                 player.finalize(win=True)
         elif self.dealer.blackjack():
-            print('Dealer Blackjact!')
+            print('Dealer Blackjack!')
             for player in self.now_player:
                 if player.value != 21:
                     player.finalize(win=False)
@@ -94,7 +96,7 @@ class Game:
         self.set_played()
         self.call_all()
         self.deal_card()
-        self.Draw_all_player()
+        self.draw_all_player()
         self.show_every_player_card(show_len=True)
         self.finalize()
         self.set_played()
@@ -118,7 +120,7 @@ class Game:
             print(f'round{time}:')
             self.play()
             self.reset()
-            print('_____________________'*2+'\n')
+            print('_____________________' * 2 + '\n')
         else:
             try:
                 print(f'{self.now_player[0]} win')
@@ -133,9 +135,9 @@ def main():
     g = Game(['God', 'Tonwan'])
     g.run()
 
+
 if __name__ == '__main__':
     main()
 
-'''
-TODO: main part at tmrw
-'''
+
+# TODO: main part at tmrw xD.

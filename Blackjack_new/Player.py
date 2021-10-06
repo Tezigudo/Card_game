@@ -73,7 +73,7 @@ class Player:
         if win != 'Draw':
             if win:
                 print(f'{self} win and got {self.had_bet}')
-                self.money += self.had_bet*2
+                self.money += self.had_bet * 2
             else:
                 print(f'{self} lose and lost {self.had_bet}')
         else:
@@ -115,6 +115,7 @@ class Player:
 
 class BlackJackPlayer(Player):
     """create a black jack object that inherit from player"""
+
     def __init__(self, name):
         super().__init__(name)
         self.money = BlackJackPlayer.initial_money
@@ -200,7 +201,7 @@ class BlackJackPlayer(Player):
         if win != 'Draw':
             if win:
                 print(f'{self} win and got {self.had_bet}')
-                self.money += self.had_bet*2
+                self.money += self.had_bet * 2
             else:
                 print(f'{self} lose and lost {self.had_bet}')
         else:
