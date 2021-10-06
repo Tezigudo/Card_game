@@ -1,35 +1,35 @@
 class Player:
-    '''define a Player object using through all card game'''
+    """define a Player object using through all card game"""
 
     initial_money = 0
 
     def __init__(self, name):
-        '''initialize
+        """initialize
         hand: player's hand
         money: player's money
         had_bet: player's bet
-        '''
+        """
         self.name = name
         self.hand = []
         self.money = Player.initial_money
         self.had_bet = 0
 
     def __str__(self):
-        '''represent Player's name when print player object'''
+        """represent Player's name when print player object"""
         return self.name
 
     def __repr__(self):
-        '''represent class name and object name'''
+        """represent class name and object name"""
         return f'Player -> {self.name}'
 
     @property
     def value(self):
-        '''return value from calculated value '''
+        """return value from calculated value """
         return self.calculate_val
 
     @value.getter
     def calculate_val(self):
-        '''calculate value'''
+        """calculate value"""
         s = 0
         for card in self.hand:
             val = card.split()[0]
@@ -44,29 +44,29 @@ class Player:
 
     @classmethod
     def set_player_money(cls, money):
-        '''set all player money when'''
+        """set all player money when"""
         cls.initial_money = money
 
     def draw(self, deck, more=False):
-        '''print what card that draw if more is True else not print'''
+        """print what card that draw if more is True else not print"""
         tmp = deck.pop()
         self.hand.append(tmp)
         if more:
             print(f'{self} has Draw {tmp}')
 
     def show_hand(self):
-        '''Show hand of player '''
+        """Show hand of player """
         print(f'{self.name} had {self.hand}')
         print(f'value = {self.value}')
 
     def bet(self, money):
-        '''bet'''
+        """bet"""
         self.money -= money
         self.had_bet = money
 
     def finialize(self, win=False):
-        '''add bet money o player if win else minus if draw do nothing
-        then reset the bet money'''
+        """add bet money o player if win else minus if draw do nothing
+        then reset the bet money"""
 
         if win != 'Draw':
             if win:
@@ -81,7 +81,7 @@ class Player:
         self.had_bet = 0
 
     def if_win(self, dealer):
-        '''check whether player value more that dealer value'''
+        """check whether player value more that dealer value"""
         if self.value == dealer.value:
             return 'Draw'
         else:
@@ -89,34 +89,36 @@ class Player:
 
     def call(self):
         print(f'{self} amount is: {self.money}')
-        try:
-            amount = float(input('Please enter amount to bet: '))
-        except ValueError:
-            print('Invalid input')
-            self.call()
-        if amount > self.money:
-            print('you not have enough amount please try again')
-            self.call()
-        else:
-            self.bet(amount)
-            print(f'{self} have bet: {amount}')
-            print(f'{self} have {self.money} left.')
+        while True:
+            amount = input('Please enter amount to bet: ')
+            if amount.isdigit():
+                amount = float(amount)
+                if amount > self.money:
+                    print('you not have enough amount please try again')
+                else:
+                    break
+            else:
+                print('Invalid Input please try again:')
+
+        self.bet(amount)
+        print(f'{self} have bet: {amount}')
+        print(f'{self} have {self.money} left.')
 
 
-class Black_Jack_player(Player):
-    '''create a black jack object that inherit from player'''
+class BlackJackPlayer(Player):
+    """create a black jack object that inherit from player"""
     def __init__(self, name):
         super().__init__(name)
-        self.money = Black_Jack_player.initial_money
+        self.money = BlackJackPlayer.initial_money
 
     @property
     def value(self):
-        '''return player value'''
+        """return player value"""
         return self.calculate_val
 
     @value.getter
     def calculate_val(self):
-        '''calculate value for player and return in'''
+        """calculate value for player and return in"""
         s = ace_count = 0
         for card in self.hand:
             val = card.split()[0]
@@ -138,19 +140,20 @@ class Black_Jack_player(Player):
         return s
 
     def show_unblined_card(self):
-        '''show unblinded card'''
+        """show unblinded card"""
         print(f'{self}:')
         print(f'unblind is: {self.hand[0]}')
 
     def check_if_hand_valid(self):
-        '''check whether player value less than 21'''
+        """check whether player value less than 21"""
         return self.value < 22
 
     def blackjack(self):
+        """check whether player is Blackjack"""
         return self.value == 21
 
     def draw_one_turn(self, game):
-        '''draw one turn for black jack'''
+        """draw one turn for black jack"""
         self.show_hand()
         while self.value <= 21:
             if not self.check_if_hand_valid() or self.blackjack():
@@ -165,7 +168,7 @@ class Black_Jack_player(Player):
             self.show_hand()
 
     def if_win(self, dealer):
-        '''check whether player value more that dealer value'''
+        """check whether player value more that dealer value"""
         if self.blackjack():
             return 'BlackJack'
         if not self.check_if_hand_valid():
@@ -176,15 +179,15 @@ class Black_Jack_player(Player):
             return self.value > dealer.value
 
     def finialize(self, win=None):
-        '''add bet money o player if win else minus if draw do nothing
-        then reset the bet money'''
+        """add bet money o player if win else minus if draw do nothing
+        then reset the bet money"""
 
         match win:
             case 'Blackjack':
-                print('Black Jack!')
+                print(f'{self.name} Black Jack!')
                 win = True
             case 'Burst':
-                print('Burst')
+                print(f'{self.name} Burst!')
                 win = False
 
         if win != 'Draw':

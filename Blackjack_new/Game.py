@@ -1,10 +1,9 @@
-import random
 from Card import Card
-from Player import Black_Jack_player
+from Player import BlackJackPlayer
 from time import sleep
 
 
-class computer_player(Black_Jack_player):
+class computer_player(BlackJackPlayer):
     '''create an computer player for blck jack'''
 
     num = 0
@@ -17,7 +16,7 @@ class computer_player(Black_Jack_player):
 
     def draw_one_turn(self, game):
         '''draw card untill computer hand values more than 17'''
-        while self.val < 17:
+        while self.val <= 17:
             self.draw(game.deck.deck)
             if not self.check_if_hand_valid() or self.blackjack():
                 break
@@ -26,7 +25,7 @@ class computer_player(Black_Jack_player):
 class Game:
     '''Entire game object'''
     def __init__(self, name_list: list[str]):
-        self.Player_list = [Black_Jack_player(name) for name in name_list]
+        self.Player_list = [BlackJackPlayer(name) for name in name_list]
         # create an player list
         self.dealer = computer_player()  # create an dealer player
         self.deck = Card()
@@ -79,13 +78,13 @@ class Game:
 
     @property
     def now_player(self):
-        return [player for player in self.Player_list if player.money > 0]
+        return [player for player in self.Player_list if player.money >= 0]
 
 
 def main():
     '''main func'''
     money = float(input('Enter each player money: '))
-    Black_Jack_player.set_player_money(money)
+    BlackJackPlayer.set_player_money(money)
     g = Game(['God', 'Tw'])
     g.play()
 
@@ -95,6 +94,4 @@ if __name__ == '__main__':
 
 '''
 TODO: tomorrow I will fix the bug
--> input num
--> test if more than 21 and break then continue
 '''
