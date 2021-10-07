@@ -1,6 +1,3 @@
-# from __future__ import annotations
-
-
 class Player:
     """define a Player object using through all card game"""
 
