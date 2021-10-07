@@ -1,8 +1,8 @@
 # from __future__ import annotations
-from typing import List
+# from typing import List
 from Card import Card
 from Player import BlackJackPlayer
-
+from time import sleep
 
 # from rich.console import Console
 
@@ -130,19 +130,33 @@ class Game:
                 print('Dealer win')
 
 
+
 def main():
     """main func"""
-    print('Welcome to Poker game')
-
-
-    money = float(input('Enter each player money: '))
-    BlackJackPlayer.set_player_money(money)
-    g = Game(['God', 'Tonwan'])
-    g.run()
-
+    while True:
+        print('Welcome to Blackjack game')
+        print('1.) PLay a game')
+        print('2.) Read rule and win condition')
+        print('3.) Quit')
+        choice = input('Please choose(1/2/3)')
+        match choice:
+            case '1':
+                money = float(input('Enter each player money: '))
+                BlackJackPlayer.set_player_money(money)
+                g = Game(['God', 'Tonwan'])
+                g.run()
+                # TODO: do the try again option
+            case '2':
+                # TODO: Do the rule of blackjack
+                pass
+            case '3':
+                for i in range(3, 0, -1):
+                    print(f'Game will exit in {i}', end='\r')
+                    sleep(1)
+                break
+            case _:
+                print('Invalid Input')
 
 if __name__ == '__main__':
     main()
-
-
-# TODO: main part at tmrw xD.
+    print('Thanks for Enjoy Us xD')
