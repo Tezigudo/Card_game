@@ -135,10 +135,26 @@ class Game:
                 console.print('Dealer win', style='green')
             printcolor('_____________________' * 2 + '\n')
 
-def play_one_ronud():
+
+def play():
     money = float(input('Enter each player money: '))
     BlackJackPlayer.set_player_money(money)
-    g = Game(['God', 'Tonwan'])
+    player_list = []
+    while True:
+        name = input('Enter name: ')
+        player_list.append(name)
+        print(f'now Playerlist: {player_list}')
+        printcolor('[green]Y[/green]/[red]N[/red]', end=': ')
+        tmp = input()
+        match tmp:
+            case 'N' | 'n':
+                break
+            case 'Y' | 'y':
+                continue
+            case _:
+                print('Invalid input')
+
+    g = Game(player_list)
     g.run()
 
 
@@ -152,9 +168,16 @@ def main():
         choice = input('Please choose(1/2/3): ')
         match choice:
             case '1':
-                play_one_ronud()
-                printcolor('Play again? ([green]Y[/green]/[red]N[/red]): ')
-                pass
+                play()
+                printcolor('Play again? ([green]Y[/green]/[red]N[/red]): ', end='')
+                tmp = input()
+                if tmp.upper() == 'Y':
+                    play()
+                elif tmp.upper() == 'N':
+                    continue
+                else:
+                    print('Invalid input')
+                    continue
             case '2':
                 # TODO: Do the rule of blackjack
                 pass
