@@ -3,10 +3,10 @@
 from Card import Card
 from Player import BlackJackPlayer
 from time import sleep
+from rich.console import Console
+from rich import print as printcolorcolour
 
-# from rich.console import Console
-
-# c = Console()
+console = Console()
 
 
 class ComputerPlayer(BlackJackPlayer):
@@ -48,30 +48,35 @@ class Game:
         for player in self.now_player:
             player.show_unblined_card()
             if show_len:
-                print(f'Have {len(player.hand)} Card')
-            print()
+                printcolor(f'Have {len(player.hand)} Card')
+            printcolor()
 
     def draw_all_player(self):
         """Draw card to all payer"""
         self.show_every_player_card()
         self.dealer.show_unblined_card()
-        print()
+        printcolor()
 
         for player in self.now_player:
-            print(f"{player}'s Turn:")
+            console.printcolor(f"{player}'s Turn:", style='blue')
             player.draw_one_turn(self)
-            print()
+            printcolor()
         self.dealer.draw_one_turn(self)
 
     def finalize(self):
         """Finalize the game whether player get money or lose money"""
-        print(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
+        printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
+
         if not self.dealer.check_if_hand_valid():
-            print('Dealer Burst:')
+            printcolor('Dealer Burst:')
             for player in self.now_player:
-                player.finalize(win=True)
+                if player.check_if_hand_valid:
+                    player.finalize(win=True)
+                else:
+                    player.finalize(win='Draw')
+
         elif self.dealer.blackjack():
-            print('Dealer Blackjack!')
+            printcolor('Dealer Blackjack!')
             for player in self.now_player:
                 if player.value != 21:
                     player.finalize(win=False)
@@ -85,6 +90,7 @@ class Game:
         """call all Player"""
         for player in self.now_player:
             player.call()
+            printcolor()
 
     def set_played(self):
         for player in self.Player_list:
@@ -115,48 +121,52 @@ class Game:
             player.reset()
 
     def run(self):
-        # c.print('welcome', style='blue on white')
         time = 0
         while len(self.now_player) > 1 or time == 0:
             time += 1
-            print(f'round{time}:')
+            printcolor(f'round{time}:')
             self.play()
             self.reset()
-            print('_____________________' * 2 + '\n')
+            printcolor('_____________________' * 2 + '\n')
         else:
             try:
-                print(f'{self.now_player[0]} win')
+                console.printcolor(f'{self.now_player[0]} win', style='green')
             except IndexError:
-                print('Dealer win')
+                console.printcolor('Dealer win', style='green')
+            printcolor('_____________________' * 2 + '\n')
 
+def play_one_ronud():
+    money = float(input('Enter each player money: '))
+    BlackJackPlayer.set_player_money(money)
+    g = Game(['God', 'Tonwan'])
+    g.run()
 
 
 def main():
     """main func"""
     while True:
-        print('Welcome to Blackjack game')
-        print('1.) PLay a game')
-        print('2.) Read rule and win condition')
-        print('3.) Quit')
+        console.printcolor('Welcome to Blackjack game', style='blue')
+        console.printcolor('1.) PLay a game', style='blue')
+        console.printcolor('2.) Read rule and win condition', style='blue')
+        console.printcolor('3.) Quit', style='blue')
         choice = input('Please choose(1/2/3)')
         match choice:
             case '1':
-                money = float(input('Enter each player money: '))
-                BlackJackPlayer.set_player_money(money)
-                g = Game(['God', 'Tonwan'])
-                g.run()
-                # TODO: do the try again option
+                play_one_ronud()
+                printcolor('Play again? ([green]Y[/green]/[red]N[/red])')
+                
             case '2':
                 # TODO: Do the rule of blackjack
                 pass
             case '3':
                 for i in range(3, 0, -1):
-                    print(f'Game will exit in {i}', end='\r')
+                    printcolor(f'Game will exit in {i}', end='\r')
                     sleep(1)
                 break
             case _:
-                print('Invalid Input')
+                printcolor('[red]Invalid Input[/red]')
+
 
 if __name__ == '__main__':
     main()
-    print('Thanks for Enjoy Us xD')
+    console.printcolor('Thanks for Enjoy Us xD', style='blue')
