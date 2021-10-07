@@ -4,7 +4,7 @@ from Card import Card
 from Player import BlackJackPlayer
 from time import sleep
 from rich.console import Console
-from rich import print as printcolorcolour
+from rich import print as printcolor
 
 console = Console()
 
@@ -58,7 +58,7 @@ class Game:
         printcolor()
 
         for player in self.now_player:
-            console.printcolor(f"{player}'s Turn:", style='blue')
+            console.print(f"{player}'s Turn:", style='blue')
             player.draw_one_turn(self)
             printcolor()
         self.dealer.draw_one_turn(self)
@@ -130,9 +130,9 @@ class Game:
             printcolor('_____________________' * 2 + '\n')
         else:
             try:
-                console.printcolor(f'{self.now_player[0]} win', style='green')
+                console.print(f'{self.now_player[0]} win', style='green')
             except IndexError:
-                console.printcolor('Dealer win', style='green')
+                console.print('Dealer win', style='green')
             printcolor('_____________________' * 2 + '\n')
 
 def play_one_ronud():
@@ -145,16 +145,16 @@ def play_one_ronud():
 def main():
     """main func"""
     while True:
-        console.printcolor('Welcome to Blackjack game', style='blue')
-        console.printcolor('1.) PLay a game', style='blue')
-        console.printcolor('2.) Read rule and win condition', style='blue')
-        console.printcolor('3.) Quit', style='blue')
-        choice = input('Please choose(1/2/3)')
+        console.print('Welcome to Blackjack game', style='blue')
+        console.print('1.) PLay a game', style='blue')
+        console.print('2.) Read rule and win condition', style='blue')
+        console.print('3.) Quit', style='blue')
+        choice = input('Please choose(1/2/3): ')
         match choice:
             case '1':
                 play_one_ronud()
-                printcolor('Play again? ([green]Y[/green]/[red]N[/red])')
-                
+                printcolor('Play again? ([green]Y[/green]/[red]N[/red]): ')
+                pass
             case '2':
                 # TODO: Do the rule of blackjack
                 pass
@@ -169,4 +169,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    console.printcolor('Thanks for Enjoy Us xD', style='blue')
+    console.print('Thanks for Enjoy Us xD', style='blue')

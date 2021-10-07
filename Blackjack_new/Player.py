@@ -61,7 +61,7 @@ class Player:
         tmp = deck.pop()
         self.hand.append(tmp)
         if more:
-            printcolor(f'{self} has Draw {tmp}')
+            print(f'{self} has Draw {tmp}')
 
     def show_hand(self):
         """Show hand of player """
@@ -79,10 +79,10 @@ class Player:
 
         if win != 'Draw':
             if win:
-                printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
+                printcolor(f'{self} win and [green]got {self.had_bet}[/green]')
                 self.money += self.had_bet * 2
             else:
-                printcolor(f'{self} lose and [red]lost[/red] {self.had_bet}')
+                printcolor(f'{self} lose and [red]lost {self.had_bet}[/red]')
         else:
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
@@ -105,7 +105,7 @@ class Player:
                 if amount > self.money:
                     printcolor('you not have enough amount please try again')
                 elif amount < 0:
-                    console.printcolor(f'--Negative Amount--', style='red')
+                    console.print(f'--Negative Amount--', style='red')
                     raise ValueError
                 else:
                     break
@@ -201,18 +201,18 @@ class BlackJackPlayer(Player):
 
         match win:
             case 'Blackjack':
-                printcolor(f'{self.name} Black Jack!')
+                printcolor(f'{self.name} [green]Black Jack![/green]')
                 win = True
             case 'Burst':
-                printcolor(f'{self.name} Burst!')
+                printcolor(f'{self.name} [red]Burst![/red]')
                 win = False
 
         if win != 'Draw':
             if win:
-                printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
+                printcolor(f'{self} win and [green]got {self.had_bet}[/green]')
                 self.money += self.had_bet * 2
             else:
-                printcolor(f'{self} lose and [red]lost[/red] {self.had_bet}')
+                printcolor(f'{self} lose and [red]lost {self.had_bet}[/red]')
         else:
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
