@@ -1,4 +1,8 @@
 # from __future__ import annotations
+from rich.console import Console
+from rich import print as printcolor
+
+console = Console()
 
 
 class Player:
@@ -20,7 +24,7 @@ class Player:
         self.played = None
 
     def __str__(self):
-        """represent Player's name when print player object"""
+        """represent Player's name when printcolor player object"""
         return self.name
 
     def __repr__(self):
@@ -53,16 +57,16 @@ class Player:
         cls.initial_money = money
 
     def draw(self, deck, more=False):
-        """print what card that draw if more is True else not print"""
+        """print what card that draw if more is True else not printcolor"""
         tmp = deck.pop()
         self.hand.append(tmp)
         if more:
-            print(f'{self} has Draw {tmp}')
+            printcolor(f'{self} has Draw {tmp}')
 
     def show_hand(self):
         """Show hand of player """
-        print(f'{self.name} had {self.hand}')
-        print(f'value = {self.value}')
+        printcolor(f'{self.name} had {self.hand}')
+        printcolor(f'value = {self.value}')
 
     def bet(self, money):
         """bet"""
@@ -75,14 +79,14 @@ class Player:
 
         if win != 'Draw':
             if win:
-                print(f'{self} win and got {self.had_bet}')
+                printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
                 self.money += self.had_bet * 2
             else:
-                print(f'{self} lose and lost {self.had_bet}')
+                printcolor(f'{self} lose and [red]lost[/red] {self.had_bet}')
         else:
             self.money += self.had_bet
-            print(f'{self} Draw')
-        print(f'{self} have {self.money} left.')
+            printcolor(f'{self} [b]Draw[/b]')
+        printcolor(f'{self} have {self.money} left.')
 
     def if_win(self, dealer):
         """check whether player value more that dealer value"""
@@ -92,24 +96,26 @@ class Player:
             return self.value > dealer.value
 
     def call(self):
-        print(f'{self} amount is: {self.money}')
+        """Call """
+        printcolor(f'{self} amount is: {self.money}')
         while True:
             amount = input('Please enter amount to bet: ')
             try:
                 amount = float(amount)
                 if amount > self.money:
-                    print('you not have enough amount please try again')
+                    printcolor('you not have enough amount please try again')
                 elif amount < 0:
-                    raise ValueError('--Negative Amount--')
+                    console.printcolor(f'--Negative Amount--', style='red')
+                    raise ValueError
                 else:
                     break
             except ValueError:
-                print('Invalid Input please try again:')
+                printcolor('Invalid Input please try again:')
             print()
 
         self.bet(amount)
-        print(f'{self} have bet: {amount}')
-        print(f'{self} have {self.money} left.')
+        printcolor(f'{self} have bet: {amount}')
+        printcolor(f'{self} have {self.money} left.')
 
     def reset(self):
         self.had_bet = 0
@@ -153,7 +159,7 @@ class BlackJackPlayer(Player):
 
     def show_unblined_card(self):
         """show unblinded card"""
-        print(f'{self}:')
+        printcolor(f'{self}:')
         print(f'unblind is: {self.hand[0]}')
 
     def check_if_hand_valid(self):
@@ -176,7 +182,7 @@ class BlackJackPlayer(Player):
             elif ans.upper() == 'N':
                 break
             else:
-                print('Invalid Input please try again')
+                printcolor('Invalid Input please try again')
             self.show_hand()
 
     def if_win(self, dealer):
@@ -195,20 +201,20 @@ class BlackJackPlayer(Player):
 
         match win:
             case 'Blackjack':
-                print(f'{self.name} Black Jack!')
+                printcolor(f'{self.name} Black Jack!')
                 win = True
             case 'Burst':
-                print(f'{self.name} Burst!')
+                printcolor(f'{self.name} Burst!')
                 win = False
 
         if win != 'Draw':
             if win:
-                print(f'{self} win and got {self.had_bet}')
+                printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
                 self.money += self.had_bet * 2
             else:
-                print(f'{self} lose and lost {self.had_bet}')
+                printcolor(f'{self} lose and [red]lost[/red] {self.had_bet}')
         else:
             self.money += self.had_bet
-            print(f'{self} Draw')
-        print(f'{self} have {self.money} left.')
+            printcolor(f'{self} [b]Draw[/b]')
+        printcolor(f'{self} have {self.money} left.')
         self.had_bet = 0
