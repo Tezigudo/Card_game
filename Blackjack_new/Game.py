@@ -68,7 +68,7 @@ class Game:
         printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
 
         if not self.dealer.check_if_hand_valid():
-            printcolor('Dealer Burst:')
+            printcolor('[green]Dealer Burst[/green]:')
             for player in self.now_player:
                 if player.check_if_hand_valid:
                     player.finalize(win=True)
@@ -78,7 +78,7 @@ class Game:
         elif self.dealer.blackjack():
             printcolor('Dealer Blackjack!')
             for player in self.now_player:
-                if player.value != 21:
+                if not player.blackjack:
                     player.finalize(win=False)
                 else:
                     player.finalize(win='Draw')
@@ -140,8 +140,9 @@ def play():
     money = float(input('Enter each player money: '))
     BlackJackPlayer.set_player_money(money)
     player_list = []
+    print()
     while True:
-        name = input('Enter name: ')
+        name = input(f'Enter Player{len(player_list)+1} name: ')
         player_list.append(name)
         print(f'now Playerlist: {player_list}')
         printcolor('[green]Y[/green]/[red]N[/red]', end=': ')

@@ -218,3 +218,5 @@ class BlackJackPlayer(Player):
             printcolor(f'{self} [b]Draw[/b]')
         printcolor(f'{self} have {self.money} left.')
         self.had_bet = 0
+
+# TODO: do a all in function.
