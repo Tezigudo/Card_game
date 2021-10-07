@@ -1,3 +1,5 @@
+# from __future__ import annotations
+from typing import List
 from Card import Card
 from Player import BlackJackPlayer
 
@@ -130,6 +132,9 @@ class Game:
 
 def main():
     """main func"""
+    print('Welcome to Poker game')
+
+
     money = float(input('Enter each player money: '))
     BlackJackPlayer.set_player_money(money)
     g = Game(['God', 'Tonwan'])
