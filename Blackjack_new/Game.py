@@ -1,11 +1,13 @@
 # from __future__ import annotations
-# from typing import List
+import os
+from time import sleep
+
+from rich import print as printcolor
+from rich.console import Console
+
 from Card import Card
 from Player import BlackJackPlayer
-from time import sleep
-from rich.console import Console
-from rich import print as printcolor
-import os
+
 console = Console()
 
 
@@ -14,12 +16,12 @@ class ComputerPlayer(BlackJackPlayer):
 
     num = 0
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(self)
         ComputerPlayer.num += 1
         self.name = 'BOT' + str(ComputerPlayer.num)
 
-    def draw_one_turn(self, game):
+    def draw_one_turn(self, game) -> None:
         """draw card until computer hand values more than 17"""
         while self.value <= 17:
             self.draw(game.deck.deck)
@@ -30,32 +32,32 @@ class ComputerPlayer(BlackJackPlayer):
 class Game:
     """Entire game object"""
 
-    def __init__(self, name_list: list[str]):
+    def __init__(self, name_list: list[str]) -> None:
         self.Player_list = [BlackJackPlayer(name) for name in name_list]
         # create an player list
         self.dealer = ComputerPlayer()  # create an dealer player
         self.deck = Card()
 
-    def deal_card(self):
+    def deal_card(self) -> None:
         """deal card to all player"""
         for _ in range(2):
             self.dealer.draw(self.deck.deck)
             for player in self.now_player:
                 player.draw(self.deck.deck)
 
-    def show_every_player_card(self, show_len=False):
+    def show_every_player_card(self, show_len=False) -> None:
         """show every player card unblinded and show the length of it if show_len"""
         for player in self.now_player:
-            player.show_unblined_card()
+            player.show_unblind_card()
             if show_len:
                 printcolor(f'Have {len(player.hand)} Card')
             printcolor()
 
-    def draw_all_player(self):
+    def draw_all_player(self) -> None:
         """Draw card to all payer"""
         for player in self.now_player:
             self.show_every_player_card()
-            self.dealer.show_unblined_card()
+            self.dealer.show_unblind_card()
             print()
             console.print(f"{player}'s Turn:", style='blue')
             player.draw_one_turn(self)
@@ -64,7 +66,7 @@ class Game:
             os.system('clear')
         self.dealer.draw_one_turn(self)
 
-    def finalize(self):
+    def finalize(self) -> None:
         """Finalize the game whether player get money or lose money"""
         printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
 
@@ -87,21 +89,21 @@ class Game:
             for player in self.now_player:
                 player.finalize(win=player.if_win(self.dealer))
 
-    def call_all(self):
+    def call_all(self) -> None:
         """call all Player"""
         for player in self.now_player:
             player.call()
             sleep(1)
             print()
 
-    def set_played(self):
+    def set_played(self) -> None:
         for player in self.Player_list:
             if player.money > 0:
                 player.played = True
             else:
                 player.played = False
 
-    def play(self):
+    def play(self) -> None:
         """This Func Use to play one game"""
         self.set_played()
         self.call_all()
@@ -115,17 +117,17 @@ class Game:
         self.clear_screen()
 
     @property
-    def now_player(self):
+    def now_player(self) -> list[BlackJackPlayer]:
         """return an player which not knock(money>=0)"""
         return [player for player in self.Player_list if player.played]
 
-    def reset(self):
+    def reset(self) -> None:
         self.deck.reset()
         self.dealer.reset()
         for player in self.Player_list:
             player.reset()
 
-    def run(self):
+    def run(self) -> None:
         time = 0
         while len(self.now_player) > 1 or time == 0:
             time += 1
@@ -141,11 +143,15 @@ class Game:
             printcolor('_____________________' * 2 + '\n')
 
     @staticmethod
-    def clear_screen():
+    def clear_screen() -> None:
+        """ clear a screen """
         os.system('clear')
 
 
-def play():
+def play() -> None:
+    """
+    This function play entire game
+    """
     Game.clear_screen()
     try:
         money = float(input('Enter each player money: '))
@@ -153,7 +159,7 @@ def play():
         player_list = []
         print()
         while True:
-            name = input(f'Enter Player{len(player_list)+1} name: ')
+            name = input(f'Enter Player{len(player_list) + 1} name: ')
             player_list.append(name)
             print(f'now Playerlist: {player_list}')
             printcolor('[green]Y[/green]/[red]N[/red]', end=': ')
@@ -174,7 +180,7 @@ def play():
         play()
 
 
-def main():
+def main() -> None:
     """main func"""
     while True:
         console.print('Welcome to Blackjack game', style='blue')

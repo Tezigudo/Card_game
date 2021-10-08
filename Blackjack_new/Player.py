@@ -1,17 +1,21 @@
 # from __future__ import annotations
-from rich.console import Console
-from rich import print as printcolor
 from time import sleep
+
+from rich import print as printcolor
+from rich.console import Console
+
 console = Console()
 
 
+# @dataclass
 class Player:
     """define a Player object using through all card game"""
 
     initial_money = 0
 
-    def __init__(self, name):
-        """initialize
+    def __init__(self, name: str):
+        """
+        initialize
         hand: player's hand
         money: player's money
         had_bet: player's bet
@@ -52,11 +56,11 @@ class Player:
         return s
 
     @classmethod
-    def set_player_money(cls, money):
+    def set_player_money(cls, money: int) -> None:
         """set all player money when"""
         cls.initial_money = money
 
-    def draw(self, deck, more=False):
+    def draw(self, deck, more=False) -> None:
         """print what card that draw if more is True else not printcolor"""
         tmp = deck.pop()
         self.hand.append(tmp)
@@ -71,12 +75,12 @@ class Player:
         else:
             printcolor(f'value = [red]{self.value}[/red]')
 
-    def bet(self, money):
+    def bet(self, money: int) -> None:
         """bet"""
         self.money -= money
         self.had_bet = money
 
-    def finalize(self, win=False):
+    def finalize(self, win=False) -> None:
         """add bet money o player if win else minus if draw do nothing
         then reset the bet money"""
 
@@ -91,18 +95,21 @@ class Player:
             printcolor(f'{self} [b]Draw[/b]')
         printcolor(f'{self} have {self.money} left.')
 
-    def if_win(self, dealer):
+    def if_win(self, dealer) -> str | bool:
         """check whether player value more that dealer value"""
         if self.value == dealer.value:
             return 'Draw'
         else:
             return self.value > dealer.value
 
-    def all_in(self):
+    def all_in(self) -> None:
         self.bet(self.money)
 
     def call(self):
-        """Call """
+        """
+        call for each person
+        :return: None
+        """
         printcolor(f'{self} amount is: {self.money}')
         while True:
             printcolor('[yellow](All-IN | all in | all-in | ALL IN)[/yellow] to all in')
@@ -145,6 +152,10 @@ class BlackJackPlayer(Player):
     """create a black jack object that inherit from player"""
 
     def __init__(self, name):
+        """
+
+        :param name: str
+        """
         super().__init__(name)
         self.money = BlackJackPlayer.initial_money
 
@@ -176,7 +187,7 @@ class BlackJackPlayer(Player):
 
         return s
 
-    def show_unblined_card(self):
+    def show_unblind_card(self):
         """show unblinded card"""
         printcolor(f'[blue]{self}:[/blue]')
         print(f'unblind is: {self.hand[0]}')
@@ -189,7 +200,7 @@ class BlackJackPlayer(Player):
         """check whether player is Blackjack"""
         return self.value == 21
 
-    def draw_one_turn(self, game):
+    def draw_one_turn(self, game) -> None:
         """draw one turn for black jack"""
         self.show_hand()
         while self.value <= 21:
@@ -204,7 +215,7 @@ class BlackJackPlayer(Player):
                 printcolor('[red]Invalid Input[/red] please try again')
             self.show_hand()
 
-    def if_win(self, dealer):
+    def if_win(self, dealer) -> str | bool:
         """check whether player value more that dealer value"""
         if self.blackjack():
             return 'BlackJack'
@@ -215,7 +226,7 @@ class BlackJackPlayer(Player):
         else:
             return self.value > dealer.value
 
-    def finalize(self, win=None):
+    def finalize(self, win=None) -> None:
         """Finalize Blackjack player same func as player"""
 
         match win:
