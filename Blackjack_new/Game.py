@@ -147,6 +147,28 @@ class Game:
         """ clear a screen """
         os.system('clear')
 
+    @staticmethod
+    def show_rule() -> None:
+        print()
+        printcolor('[b]Black Jack Rule[/b]')
+        printcolor('Value of list if win are:\n'
+                   ' - if player are [green]21[/green]'
+                   ' we will call it [blue]BLACKJACK[/blue]\n'
+                   ' Automatically [green]win[/green] '
+                   '[red]EXCEPT[/red] dealer are [blue]blackjack[/blue] too\n'
+                   ' This condition player will [white]DRAW[/white]\n\n'
+                   ' - if player are more than [white]21[/white]'
+                   ' will automatically [red]lost money[/red]\n'
+                   ' - else [green]win[/green] if value is ever '
+                   '[green]more than[/green] dealer [red]lose[/red] otherwise\n')
+        printcolor('Lets go to [blue]How to Play[/blue]\n'
+                   'First player draw all card until player '
+                   '[red]NOT CONTINUE TO DRAW[/red]\n'
+                   'or PLAYER VALUE IS [red]NOT VALID[/red] '
+                   'Then compare each [blue]player[/blue] and [blue]dealer[/blue] value.\n'
+                   'if player [green]money[/green] is less than '
+                   '0 that player [red]will be [b]ELIMINATED[/b][/red]')
+
 
 def play() -> None:
     """
@@ -201,8 +223,7 @@ def main() -> None:
                     print('Invalid input')
                     continue
             case '2':
-                # TODO: Do the rule of blackjack
-                pass
+                Game.show_rule()
             case '3':
                 for i in range(3, 0, -1):
                     printcolor(f'Game will exit in {i}', end='\r')
