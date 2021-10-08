@@ -1,11 +1,16 @@
-# from __future__ import annotations
+__author__ = 'Preawpan Thamapipol(Godiez1)'
+__copyright__ = 'Godiez1 Github'
+__email__ = 'godjangg@gmail.com'
+__version__ = '1.0.0'
+__status__ = 'Finished'
+
 import random
 
 
 class Card:
     """ Card object"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.deck = self.create_deck()
         self.shuffle()
 
@@ -29,11 +34,11 @@ class Card:
                 deck.append(f'{val} of {suit}')
         return deck
 
-    def shuffle(self):
+    def shuffle(self) -> None:
         """shuffle a deck!"""
         random.shuffle(self.deck)
 
-    def reset(self):
+    def reset(self) -> None:
         """reset a deck"""
         self.deck = self.create_deck()
         self.shuffle()
