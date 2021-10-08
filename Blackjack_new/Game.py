@@ -5,7 +5,7 @@ from Player import BlackJackPlayer
 from time import sleep
 from rich.console import Console
 from rich import print as printcolor
-
+import os
 console = Console()
 
 
@@ -53,14 +53,15 @@ class Game:
 
     def draw_all_player(self):
         """Draw card to all payer"""
-        self.show_every_player_card()
-        self.dealer.show_unblined_card()
-        printcolor()
-
         for player in self.now_player:
+            self.show_every_player_card()
+            self.dealer.show_unblined_card()
+            print()
             console.print(f"{player}'s Turn:", style='blue')
             player.draw_one_turn(self)
             printcolor()
+            sleep(2)
+            os.system('clear')
         self.dealer.draw_one_turn(self)
 
     def finalize(self):
@@ -90,7 +91,8 @@ class Game:
         """call all Player"""
         for player in self.now_player:
             player.call()
-            printcolor()
+            sleep(1)
+            print()
 
     def set_played(self):
         for player in self.Player_list:
@@ -103,11 +105,14 @@ class Game:
         """This Func Use to play one game"""
         self.set_played()
         self.call_all()
+        self.clear_screen()
         self.deal_card()
         self.draw_all_player()
         self.show_every_player_card(show_len=True)
         self.finalize()
         self.set_played()
+        sleep(3.5)
+        self.clear_screen()
 
     @property
     def now_player(self):
@@ -135,28 +140,38 @@ class Game:
                 console.print('Dealer win', style='green')
             printcolor('_____________________' * 2 + '\n')
 
+    @staticmethod
+    def clear_screen():
+        os.system('clear')
+
 
 def play():
-    money = float(input('Enter each player money: '))
-    BlackJackPlayer.set_player_money(money)
-    player_list = []
-    print()
-    while True:
-        name = input(f'Enter Player{len(player_list)+1} name: ')
-        player_list.append(name)
-        print(f'now Playerlist: {player_list}')
-        printcolor('[green]Y[/green]/[red]N[/red]', end=': ')
-        tmp = input()
-        match tmp:
-            case 'N' | 'n':
-                break
-            case 'Y' | 'y':
-                continue
-            case _:
-                print('Invalid input')
+    Game.clear_screen()
+    try:
+        money = float(input('Enter each player money: '))
+        BlackJackPlayer.set_player_money(money)
+        player_list = []
+        print()
+        while True:
+            name = input(f'Enter Player{len(player_list)+1} name: ')
+            player_list.append(name)
+            print(f'now Playerlist: {player_list}')
+            printcolor('[green]Y[/green]/[red]N[/red]', end=': ')
+            tmp = input()
+            match tmp:
+                case 'N' | 'n':
+                    break
+                case 'Y' | 'y':
+                    continue
+                case _:
+                    print('Invalid input')
 
-    g = Game(player_list)
-    g.run()
+        g = Game(player_list)
+        g.run()
+    except ValueError:
+        print('Invalid Input')
+        print()
+        play()
 
 
 def main():

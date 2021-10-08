@@ -1,7 +1,7 @@
 # from __future__ import annotations
 from rich.console import Console
 from rich import print as printcolor
-
+from time import sleep
 console = Console()
 
 
@@ -61,12 +61,15 @@ class Player:
         tmp = deck.pop()
         self.hand.append(tmp)
         if more:
-            print(f'{self} has Draw {tmp}')
+            printcolor(f'{self} has Draw [blue]{tmp}[/blue]')
 
     def show_hand(self):
         """Show hand of player """
         printcolor(f'{self.name} had {self.hand}')
-        printcolor(f'value = {self.value}')
+        if self.value < 22:
+            printcolor(f'value = {self.value}')
+        else:
+            printcolor(f'value = [red]{self.value}[/red]')
 
     def bet(self, money):
         """bet"""
@@ -95,13 +98,21 @@ class Player:
         else:
             return self.value > dealer.value
 
+    def all_in(self):
+        self.bet(self.money)
+
     def call(self):
         """Call """
         printcolor(f'{self} amount is: {self.money}')
         while True:
+            printcolor('[yellow](All-IN | all in | all-in | ALL IN)[/yellow] to all in')
             amount = input('Please enter amount to bet: ')
             try:
                 amount = float(amount)
+                if amount % 1:
+                    amount = round(amount)
+                    printcolor(f'your amount was round to {amount}')
+                    sleep(1)
                 if amount > self.money:
                     printcolor('you not have enough amount please try again')
                 elif amount < 0:
@@ -110,7 +121,15 @@ class Player:
                 else:
                     break
             except ValueError:
-                printcolor('Invalid Input please try again:')
+                match amount:
+                    case 'All-IN' | 'all in' | 'all-in' | 'ALL IN':
+                        self.all_in()
+                        printcolor(f'{self} [blue]ALL-IN[/blue]')
+                        printcolor(f'{self} have bet: {self.had_bet}')
+                        return
+
+                    case _:
+                        printcolor('[red]Invalid Input[/red] please try again:')
             print()
 
         self.bet(amount)
@@ -159,7 +178,7 @@ class BlackJackPlayer(Player):
 
     def show_unblined_card(self):
         """show unblinded card"""
-        printcolor(f'{self}:')
+        printcolor(f'[blue]{self}:[/blue]')
         print(f'unblind is: {self.hand[0]}')
 
     def check_if_hand_valid(self):
@@ -182,7 +201,7 @@ class BlackJackPlayer(Player):
             elif ans.upper() == 'N':
                 break
             else:
-                printcolor('Invalid Input please try again')
+                printcolor('[red]Invalid Input[/red] please try again')
             self.show_hand()
 
     def if_win(self, dealer):
@@ -218,5 +237,3 @@ class BlackJackPlayer(Player):
             printcolor(f'{self} [b]Draw[/b]')
         printcolor(f'{self} have {self.money} left.')
         self.had_bet = 0
-
-# TODO: do a all in function.
