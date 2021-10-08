@@ -1,4 +1,9 @@
-# from __future__ import annotations
+__author__ = 'Preawpan Thamapipol(Godiez1)'
+__copyright__ = 'Godiez1 Github'
+__email__ = 'godjangg@gmail.com'
+__version__ = '1.0.0'
+__status__ = 'Finished'
+
 from time import sleep
 
 from rich import print as printcolor
@@ -7,13 +12,12 @@ from rich.console import Console
 console = Console()
 
 
-# @dataclass
 class Player:
     """define a Player object using through all card game"""
 
     initial_money = 0
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         """
         initialize
         hand: player's hand
@@ -27,21 +31,21 @@ class Player:
         self.had_bet = 0
         self.played = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         """represent Player's name when printcolor player object"""
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """represent class name and object name"""
         return f'Player -> {self.name}'
 
     @property
-    def value(self):
+    def value(self) -> int:
         """return value from calculated value """
         return self.calculate_val
 
     @value.getter
-    def calculate_val(self):
+    def calculate_val(self) -> int:
         """calculate value"""
         s = 0
         for card in self.hand:
@@ -67,7 +71,7 @@ class Player:
         if more:
             printcolor(f'{self} has Draw [blue]{tmp}[/blue]')
 
-    def show_hand(self):
+    def show_hand(self) -> None:
         """Show hand of player """
         printcolor(f'{self.name} had {self.hand}')
         if self.value < 22:
@@ -103,9 +107,10 @@ class Player:
             return self.value > dealer.value
 
     def all_in(self) -> None:
+        """ Player all in!"""
         self.bet(self.money)
 
-    def call(self):
+    def call(self) -> None:
         """
         call for each person
         :return: None
@@ -143,7 +148,7 @@ class Player:
         printcolor(f'{self} have bet: {amount}')
         printcolor(f'{self} have {self.money} left.')
 
-    def reset(self):
+    def reset(self) -> None:
         self.had_bet = 0
         self.hand = []
 
@@ -151,7 +156,7 @@ class Player:
 class BlackJackPlayer(Player):
     """create a black jack object that inherit from player"""
 
-    def __init__(self, name):
+    def __init__(self, name) -> None:
         """
 
         :param name: str
@@ -160,12 +165,12 @@ class BlackJackPlayer(Player):
         self.money = BlackJackPlayer.initial_money
 
     @property
-    def value(self):
+    def value(self) -> int:
         """return player value"""
         return self.calculate_val
 
     @value.getter
-    def calculate_val(self):
+    def calculate_val(self) -> int:
         """calculate value for player and return in"""
         s = ace_count = 0
         for card in self.hand:
@@ -187,16 +192,16 @@ class BlackJackPlayer(Player):
 
         return s
 
-    def show_unblind_card(self):
+    def show_unblind_card(self) -> None:
         """show unblinded card"""
         printcolor(f'[blue]{self}:[/blue]')
         print(f'unblind is: {self.hand[0]}')
 
-    def check_if_hand_valid(self):
+    def check_if_hand_valid(self) -> bool:
         """check whether player value less than 21"""
         return self.value < 22
 
-    def blackjack(self):
+    def blackjack(self) -> bool:
         """check whether player is Blackjack"""
         return self.value == 21
 
