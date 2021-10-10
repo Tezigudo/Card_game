@@ -80,7 +80,7 @@ class Game:
             printcolor('[green]Dealer Burst[/green]:')
             for player in self.now_player:
                 if player.check_if_hand_valid():
-                    player.finalize(win=True)
+                    player.(win=True)
                 else:
                     player.finalize(win='Draw')
 
@@ -97,17 +97,15 @@ class Game:
 
     def call_all(self) -> None:
         """call all Player"""
+        min_bet = self.min_bet
         for player in self.now_player:
-            player.call()
+            player.call(minbet=min_bet)
             sleep(1)
             print()
 
     def set_played(self) -> None:
         for player in self.Player_list:
-            if player.money > 0:
-                player.played = True
-            else:
-                player.played = False
+            player.played = player.money > 0
 
     def play(self) -> None:
         """This Func Use to play one game"""
@@ -175,6 +173,10 @@ class Game:
                    'if player [green]money[/green] is less than '
                    '0 that player [red]will be [b]ELIMINATED[/b][/red]')
 
+    @property
+    def min_bet(self):
+        return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5)
+
 
 def play() -> None:
     """
@@ -203,8 +205,8 @@ def play() -> None:
         g = Game(player_list)
         g.run()
     except ValueError:
-        print('Invalid Input')
-        print()
+        printcolor('[red]Invalid Input[/red]')
+        sleep(1)
         play()
 
 
@@ -242,3 +244,5 @@ def main() -> None:
 if __name__ == '__main__':
     main()
     console.print('Thanks for Enjoy Us xD', style='blue')
+
+# TODO: add min bet for each player 

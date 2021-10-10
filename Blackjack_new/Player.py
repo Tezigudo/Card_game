@@ -88,15 +88,14 @@ class Player:
         """add bet money o player if win else minus if draw do nothing
         then reset the bet money"""
 
-        if win != 'Draw':
-            if win:
-                printcolor(f'{self} win and [green]got {self.had_bet}[/green]')
-                self.money += self.had_bet * 2
-            else:
-                printcolor(f'{self} lose and [red]lost {self.had_bet}[/red]')
-        else:
+        if win == 'Draw':
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
+        elif win:
+            printcolor(f'{self} win and [green]got {self.had_bet}[/green]')
+            self.money += self.had_bet * 2
+        else:
+            printcolor(f'{self} lose and [red]lost {self.had_bet}[/red]')
         printcolor(f'{self} have {self.money} left.')
 
     def if_win(self, dealer) -> str | bool:
@@ -110,26 +109,34 @@ class Player:
         """ Player all in!"""
         self.bet(self.money)
 
-    def call(self) -> None:
+    def call(self, minbet=0) -> None:
         """
         call for each person
         :return: None
         """
+        if self.money < minbet:
+            self.all_in()
+            printcolor(f'{self} was [red]FORCE[/red] to [blue]ALL-IN[/blue]')
+            printcolor(f'{self} have bet: {self.had_bet}')
+            return
         printcolor(f'{self} amount is: {self.money}')
         while True:
             printcolor('[yellow](All-IN | all in | all-in | ALL IN)[/yellow] to all in')
-            amount = input('Please enter amount to bet: ')
+            console.print(f'Please enter amount to bet ({minbet=})', end=': ')
+            amount = input()
             try:
                 amount = float(amount)
                 if amount % 1:
                     amount = round(amount)
                     printcolor(f'your amount was round to {amount}')
                     sleep(1)
-                if amount > self.money:
-                    printcolor('you not have enough amount please try again')
-                elif amount < 0:
+                if amount < 0:
                     console.print(f'--Negative Amount--', style='red')
                     raise ValueError
+                elif amount < minbet:
+                    printcolor('please enter amount that [red]more than or equal[/red] to minbet')
+                elif amount > self.money:
+                    printcolor('you not have enough amount please try again')
                 else:
                     break
             except ValueError:
