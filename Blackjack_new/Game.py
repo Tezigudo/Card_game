@@ -79,7 +79,7 @@ class Game:
         if not self.dealer.check_if_hand_valid():
             printcolor('[green]Dealer Burst[/green]:')
             for player in self.now_player:
-                if player.check_if_hand_valid:
+                if player.check_if_hand_valid():
                     player.finalize(win=True)
                 else:
                     player.finalize(win='Draw')

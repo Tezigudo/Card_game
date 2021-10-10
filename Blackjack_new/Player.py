@@ -53,7 +53,7 @@ class Player:
             match val:
                 case 'Ace':
                     s += 1
-                case 'King' | 'Queen' | 'Jack' | 'King':
+                case 'King' | 'Queen' | 'Jack':
                     s += 10
                 case _:
                     s += int(val)
@@ -223,7 +223,7 @@ class BlackJackPlayer(Player):
     def if_win(self, dealer) -> str | bool:
         """check whether player value more that dealer value"""
         if self.blackjack():
-            return 'BlackJack'
+            return 'Blackjack'
         if not self.check_if_hand_valid():
             return 'Burst'
         if self.value == dealer.value:
