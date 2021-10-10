@@ -88,15 +88,14 @@ class Player:
         """add bet money o player if win else minus if draw do nothing
         then reset the bet money"""
 
-        if win != 'Draw':
-            if win:
-                printcolor(f'{self} win and [green]got {self.had_bet}[/green]')
-                self.money += self.had_bet * 2
-            else:
-                printcolor(f'{self} lose and [red]lost {self.had_bet}[/red]')
-        else:
+        if win == 'Draw':
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
+        elif win:
+            printcolor(f'{self} win and [green]got {self.had_bet}[/green]')
+            self.money += self.had_bet * 2
+        else:
+            printcolor(f'{self} lose and [red]lost {self.had_bet}[/red]')
         printcolor(f'{self} have {self.money} left.')
 
     def if_win(self, dealer) -> str | bool:

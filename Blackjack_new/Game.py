@@ -104,10 +104,7 @@ class Game:
 
     def set_played(self) -> None:
         for player in self.Player_list:
-            if player.money > 0:
-                player.played = True
-            else:
-                player.played = False
+            player.played = player.money > 0
 
     def play(self) -> None:
         """This Func Use to play one game"""
