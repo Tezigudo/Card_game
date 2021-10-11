@@ -109,7 +109,11 @@ class Player:
         """ Player all in!"""
         self.bet(self.money)
 
-    def call(self, minbet=0) -> None:
+    def bet_min(self, minbet) -> None:
+        """ Thhis will bet min bet"""
+        self.bet(minbet)
+
+    def call(self, minbet) -> None:
         """
         call for each person
         :return: None
@@ -121,7 +125,8 @@ class Player:
             return
         printcolor(f'{self} amount is: {self.money}')
         while True:
-            printcolor('[yellow](All-IN | all in | all-in | ALL IN)[/yellow] to all in')
+            printcolor('[yellow](All-IN | all in | all-in | ALL IN)[/yellow] to [blue]ALL-IN[/blue]')
+            printcolor('[yellow](MIN-BET | min bet | min-bet | MIN-BET)[/yellow] to bet of value of [yellow]minbet[/yellow]')
             console.print(f'Please enter amount to bet ({minbet=})', end=': ')
             amount = input()
             try:
@@ -146,6 +151,12 @@ class Player:
                         printcolor(f'{self} [blue]ALL-IN[/blue]')
                         printcolor(f'{self} have bet: {self.had_bet}')
                         return
+                    
+                    case 'MIN-BET' | 'min bet' | 'min-bet' | 'MIN-BET':
+                        self.bet_min(minbet)
+                        printcolor(f'{self} has bet [yellow]minimum of bet[/yellow]')
+                        printcolor(f'{self} have bet: {self.had_bet}')
+                        return
 
                     case _:
                         printcolor('[red]Invalid Input[/red] please try again:')
@@ -158,6 +169,9 @@ class Player:
     def reset(self) -> None:
         self.had_bet = 0
         self.hand = []
+
+    def show_status(self):
+        printcolor(f'{self}: {"[green]ALIVE[/green]" if self.played else "[red]LOSES[/red]"}')
 
 
 class BlackJackPlayer(Player):
