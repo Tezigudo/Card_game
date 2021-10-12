@@ -1,2 +1,4 @@
 # Card_game
-Nothing
+module required: rich
+
+its compilable to python3.10++
