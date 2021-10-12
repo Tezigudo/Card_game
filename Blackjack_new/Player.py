@@ -126,7 +126,7 @@ class Player:
         printcolor(f'{self} amount is: {self.money}')
         while True:
             printcolor('[bold yellow](All-IN | all in | all-in | ALL IN)[/bold yellow] to [blue]ALL-IN[/blue]')
-            printcolor('[bold orange](MIN-BET | min bet | min-bet | MIN-BET)[/bold orange] to bet of value of [yellow]minbet[/yellow]')
+            printcolor('[bold yellow](MIN-BET | min bet | min-bet | MIN-BET)[/bold yellow] to bet of value of [yellow]minbet[/yellow]')
             console.print(f'Please enter amount to bet ({minbet=})', end=': ')
             amount = input()
             try:
