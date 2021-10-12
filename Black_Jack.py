@@ -72,6 +72,11 @@ class Game:
             os.system('clear')
         self.dealer.draw_one_turn(self)
 
+    def report_status(self):
+        print('current Game status:')
+        for player in self.Player_list:
+            player.show_status()
+
     def finalize(self) -> None:
         """Finalize the game whether player get money or lose money"""
         printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
@@ -80,7 +85,7 @@ class Game:
             printcolor('[green]Dealer Burst[/green]:')
             for player in self.now_player:
                 if player.check_if_hand_valid():
-                    player.(win=True)
+                    player.finalize(win=True)
                 else:
                     player.finalize(win='Draw')
 
@@ -137,6 +142,7 @@ class Game:
             time += 1
             printcolor(f'round{time}:')
             self.play()
+            self.report_status()
             self.reset()
             printcolor('_____________________' * 2 + '\n')
         else:
@@ -171,7 +177,7 @@ class Game:
                    'or PLAYER VALUE IS [red]NOT VALID[/red] '
                    'Then compare each [blue]player[/blue] and [blue]dealer[/blue] value.\n'
                    'if player [green]money[/green] is less than '
-                   '0 that player [red]will be [b]ELIMINATED[/b][/red]')
+                   '0 that player [red]will be [b]ELIMINATED[/b][/red]\n')
 
     @property
     def min_bet(self):
@@ -245,4 +251,3 @@ if __name__ == '__main__':
     main()
     console.print('Thanks for Enjoy Us xD', style='blue')
 
-# TODO: add min bet for each player 
