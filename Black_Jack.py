@@ -7,12 +7,11 @@ __status__ = 'Finished'
 
 import os
 from time import sleep
-
 from rich import print as printcolor
 from rich.console import Console
-
 from Card import Card
 from Player import BlackJackPlayer
+from Base_game import Base_game
 
 console = Console()
 
@@ -35,13 +34,14 @@ class ComputerPlayer(BlackJackPlayer):
                 break
 
 
-class Game:
+class Game(Base_game):
     """Entire game object"""
 
     def __init__(self, name_list: list[str]) -> None:
+        super().__init__(name_list)
         self.Player_list = [BlackJackPlayer(name) for name in name_list]
         # create an player list
-        self.dealer = ComputerPlayer()  # create an dealer player
+        self.dealer = ComputerPlayer() # create an dealer player
         self.deck = Card()
 
     def deal_card(self) -> None:
@@ -72,11 +72,6 @@ class Game:
             os.system('clear')
         self.dealer.draw_one_turn(self)
 
-    def report_status(self):
-        print('current Game status:')
-        for player in self.Player_list:
-            player.show_status()
-
     def finalize(self) -> None:
         """Finalize the game whether player get money or lose money"""
         printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
@@ -100,18 +95,6 @@ class Game:
             for player in self.now_player:
                 player.finalize(win=player.if_win(self.dealer))
 
-    def call_all(self) -> None:
-        """call all Player"""
-        min_bet = self.min_bet
-        for player in self.now_player:
-            player.call(minbet=min_bet)
-            sleep(1)
-            print()
-
-    def set_played(self) -> None:
-        for player in self.Player_list:
-            player.played = player.money > 0
-
     def play(self) -> None:
         """This Func Use to play one game"""
         self.set_played()
@@ -124,17 +107,6 @@ class Game:
         self.set_played()
         sleep(3.5)
         self.clear_screen()
-
-    @property
-    def now_player(self) -> list[BlackJackPlayer]:
-        """return an player which not knock(money>=0)"""
-        return [player for player in self.Player_list if player.played]
-
-    def reset(self) -> None:
-        self.deck.reset()
-        self.dealer.reset()
-        for player in self.Player_list:
-            player.reset()
 
     def run(self) -> None:
         time = 0
@@ -151,11 +123,6 @@ class Game:
             except IndexError:
                 console.print('Dealer win', style='green')
             printcolor('_____________________' * 2 + '\n')
-
-    @staticmethod
-    def clear_screen() -> None:
-        """ clear a screen """
-        os.system('clear')
 
     @staticmethod
     def show_rule() -> None:
@@ -178,10 +145,6 @@ class Game:
                    'Then compare each [blue]player[/blue] and [blue]dealer[/blue] value.\n'
                    'if player [green]money[/green] is less than '
                    '0 that player [red]will be [b]ELIMINATED[/b][/red]\n')
-
-    @property
-    def min_bet(self):
-        return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5)
 
 
 def play() -> None:
@@ -250,4 +213,3 @@ def main() -> None:
 if __name__ == '__main__':
     main()
     console.print('Thanks for Enjoy Us xD', style='blue')
-
