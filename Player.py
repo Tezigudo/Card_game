@@ -32,12 +32,15 @@ class Player:
         self.played = None
 
     def __str__(self) -> str:
-        """represent Player's name when printcolor player object"""
+        """represent Player's name when print player object"""
         return self.name
 
     def __repr__(self) -> str:
         """represent class name and object name"""
         return f'Player -> {self.name}'
+
+    def __len__(self) -> int:
+        return len(self.hand)
 
     @property
     def value(self) -> int:
@@ -61,7 +64,7 @@ class Player:
 
     @classmethod
     def set_player_money(cls, money: int) -> None:
-        """set all player money when"""
+        """set all player money"""
         cls.initial_money = money
 
     def draw(self, deck, more=False) -> None:
