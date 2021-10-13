@@ -1,3 +1,9 @@
+__author__ = 'Preawpan Thamapipol(Godiez1)'
+__copyright__ = 'Godiez1 Github'
+__email__ = 'godjangg@gmail.com'
+__version__ = '1.0.0'
+__status__ = 'working'
+
 from Player import Player
 from Card import Card
 from time import sleep

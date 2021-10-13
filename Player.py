@@ -2,7 +2,7 @@ __author__ = 'Preawpan Thamapipol(Godiez1)'
 __copyright__ = 'Godiez1 Github'
 __email__ = 'godjangg@gmail.com'
 __version__ = '1.0.0'
-__status__ = 'Finished'
+__status__ = 'working'
 
 from time import sleep
 
@@ -39,6 +39,9 @@ class Player:
         """represent class name and object name"""
         return f'Player -> {self.name}'
 
+    def __len__(self):
+        return len(self.hand)
+
     @property
     def value(self) -> int:
         """return value from calculated value """
@@ -74,10 +77,10 @@ class Player:
     def show_hand(self) -> None:
         """Show hand of player """
         printcolor(f'{self.name} had {self.hand}')
-        if self.value < 22:
-            printcolor(f'value = {self.value}')
-        else:
-            printcolor(f'value = [red]{self.value}[/red]')
+        console.print(f'value = {self.value}')
+
+    def same_card(self) -> bool:
+        return len({card.split()[0] for card in self.hand}) == 1 and 1 < len(self.hand) < 4
 
     def bet(self, money: int) -> None:
         """bet"""
@@ -151,7 +154,7 @@ class Player:
                         printcolor(f'{self} [blue]ALL-IN[/blue]')
                         printcolor(f'{self} have bet: {self.had_bet}')
                         return
-                    
+
                     case 'MIN-BET' | 'min bet' | 'min-bet' | 'MIN-BET':
                         self.bet_min(minbet)
                         printcolor(f'{self} has bet [yellow]minimum of bet[/yellow]')
@@ -212,6 +215,14 @@ class BlackJackPlayer(Player):
             ace_count -= 1
 
         return s
+
+    def show_hand(self) -> None:
+        """Show hand of player """
+        printcolor(f'{self.name} had {self.hand}')
+        if self.value < 22:
+            printcolor(f'value = {self.value}')
+        else:
+            printcolor(f'value = [red]{self.value}[/red]')
 
     def show_unblind_card(self) -> None:
         """show unblinded card"""
@@ -275,3 +286,44 @@ class BlackJackPlayer(Player):
         printcolor(f'{self} have {self.money} left.')
         self.had_bet = 0
 
+
+class PokDengPlayer(Player):
+
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self.money = PokDengPlayer.initial_money
+
+    def pok8(self):
+        return self.value == 8 and len(self) == 2
+
+    def pok9(self):
+        return self.value == 9 and len(self) == 2
+
+    def deng(self) -> str | bool:
+        if self.same_card():
+            if len(self) == 2:
+                return '2Deng'
+            return '3Deng'
+        return False
+
+    def if_win(self, other, pok=False, deng=False) -> str | bool:
+        if self.pok9():
+            pok = 'Pok9'
+        if self.pok8():
+            pok = 'Pok8'
+        deng = self.deng()
+
+        match deng:
+            case '2Deng':
+                self.bet(self.had_bet)
+            case '3Deng':
+                self.bet(self.had_bet*2)
+
+            case _:
+                pass
+
+        if pok:
+            return pok
+        if self.money == other.money:
+            return 'Draw'
+        return self.money > other.money

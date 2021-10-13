@@ -1,8 +1,8 @@
 __author__ = 'Preawpan Thamapipol(Godiez1)'
 __copyright__ = 'Godiez1 Github'
 __email__ = 'godjangg@gmail.com'
-__version__ = '1.0.0'
-__status__ = 'Finished'
+__version__ = '1.0.1'
+__status__ = 'working'
 
 
 import os
@@ -41,7 +41,7 @@ class Game(Base_game):
         super().__init__(name_list)
         self.Player_list = [BlackJackPlayer(name) for name in name_list]
         # create an player list
-        self.dealer = ComputerPlayer() # create an dealer player
+        self.dealer = ComputerPlayer()  # create an dealer player
         self.deck = Card()
 
     def deal_card(self) -> None:
