@@ -113,7 +113,7 @@ class Player:
         self.bet(self.money)
 
     def bet_min(self, minbet) -> None:
-        """ Thhis will bet min bet"""
+        """ This will bet min bet"""
         self.bet(minbet)
 
     def call(self, minbet) -> None:
@@ -302,50 +302,48 @@ class PokDengPlayer(Player):
                 return 'Pok9'
         return False
 
-    def deng(self) -> str | bool:
+    def deng(self) -> int:
+        """
+        This will return 2 if 2 deng
+                         3 if 3 deng
+                         0 otherwise
+        """
         if self.same_card():
             if len(self) == 2:
-                return '2Deng'
-            return '3Deng'
-        return False
+                return 2
+            return 3
+        return 0
 
-    def if_win(self, dealer) -> bool:
+    def if_win(self, dealer) -> str | bool:
+        """
+        check whether player win or not if draw it will return 'Draw'
+        """
 
         if self.value == dealer.value:
             return 'Draw'
         return self.value > dealer.value
 
-    def finalize(self, win=False, dealer_isdeng=False) -> None:
+    def finalize(self, win=False, dealer_deng=False) -> None:
         if win == 'Draw':
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
 
         if win:
-            match self.deng():  # TODO: make it not redundant by put deng method to return int then time multiple of it
-
-                case '2Deng':
-                    printcolor(f'{self} 2Deng! and [green]got[/green] {self.had_bet}x2 = {self.had_bet * 2}')
-                    self.money += self.had_bet * 3
-                case '3Deng':
-                    printcolor(f'{self} 3Deng! and [green]got[/green] {self.had_bet}x3 = {self.had_bet * 3}')
-                    self.money += self.had_bet * 4
-                case _:
-                    printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
-                    self.money += self.had_bet * 2
+            multiple = self.deng() if self.deng else 1
+            if self.deng():
+                printcolor(f'{self} {multiple}Deng! and [green]got[/green] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
+            else:
+                printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
+            self.money += self.had_bet*(multiple+1)
 
         else:
-            match dealer_isdeng:
-                case '2Deng':
-                    printcolor('Dealer 2Deng!'
-                               f'{self} [red]lose[/red] {self.had_bet}x2 = {self.had_bet * 2}')
-                    self.money -= self.had_bet
-                case '3Deng':
-                    printcolor('Dealer 3Deng!'
-                               f'{self} [red]lose[/red] {self.had_bet}x3 = {self.had_bet * 3}')
-                    self.money -= self.had_bet * 2
-                case _:
-                    printcolor('Dealer win'
-                               f'{self} [red]lose[/red] {self.had_bet}')
+            multiple = dealer_deng if dealer_deng else 1
+            if self.deng():
+                printcolor(f'Dealer {multiple}Deng!'
+                           f'{self} [red]lose[/red] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
+            else:
+                printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
+            self.money -= self.had_bet*multiple
 
         printcolor(f'{self} have {self.money} left.')
         self.had_bet = 0
