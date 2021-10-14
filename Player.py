@@ -277,7 +277,7 @@ class BlackJackPlayer(Player):
 
         if win != 'Draw':
             if win:
-                printcolor(f'{self} win and [green]got {self.had_bet}[/green]')
+                printcolor(f'{self} win and [green] {self.had_bet}[/green]')
                 self.money += self.had_bet * 2
             else:
                 printcolor(f'{self} lose and [red]lost {self.had_bet}[/red]')
@@ -315,26 +315,26 @@ class PokDengPlayer(Player):
             return 'Draw'
         return self.value > dealer.value
 
-    def finalize(self, win=False, dealer_isDeng=False) -> None:
+    def finalize(self, win=False, dealer_isdeng=False) -> None:
+        if win == 'Draw':
+            self.money += self.had_bet
+            printcolor(f'{self} [b]Draw[/b]')
 
         if win:
-            match self.deng():
-                case 'Draw':
-                    self.money += self.had_bet
-                    printcolor(f'{self} [b]Draw[/b]')
+            match self.deng():  # TODO: make it not redundant by put deng method to return int then time multiple of it
 
                 case '2Deng':
-                    printcolor(f'{self} 2Deng! and got {self.had_bet}x2 = {self.had_bet * 2}')
+                    printcolor(f'{self} 2Deng! and [green]got[/green] {self.had_bet}x2 = {self.had_bet * 2}')
                     self.money += self.had_bet * 3
                 case '3Deng':
-                    printcolor(f'{self} 3Deng! and got {self.had_bet}x3 = {self.had_bet * 3}')
+                    printcolor(f'{self} 3Deng! and [green]got[/green] {self.had_bet}x3 = {self.had_bet * 3}')
                     self.money += self.had_bet * 4
                 case _:
-                    printcolor(f'{self} win and got {self.had_bet}')
+                    printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
                     self.money += self.had_bet * 2
 
         else:
-            match dealer_isDeng:
+            match dealer_isdeng:
                 case '2Deng':
                     printcolor('Dealer 2Deng!'
                                f'{self} [red]lose[/red] {self.had_bet}x2 = {self.had_bet * 2}')
