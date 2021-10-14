@@ -4,14 +4,15 @@ __email__ = 'godjangg@gmail.com'
 __version__ = '1.0.1'
 __status__ = 'working'
 
-
 import os
 from time import sleep
+
 from rich import print as printcolor
 from rich.console import Console
+
+from BaseGame import BaseGame
 from Card import Card
 from Player import BlackJackPlayer
-from Base_game import Base_game
 
 console = Console()
 
@@ -34,7 +35,7 @@ class ComputerPlayer(BlackJackPlayer):
                 break
 
 
-class Game(Base_game):
+class Game(BaseGame):
     """Entire game object"""
 
     def __init__(self, name_list: list[str]) -> None:

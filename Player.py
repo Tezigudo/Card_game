@@ -183,7 +183,6 @@ class BlackJackPlayer(Player):
 
     def __init__(self, name) -> None:
         """
-
         :param name: str
         """
         super().__init__(name)
@@ -289,6 +288,7 @@ class BlackJackPlayer(Player):
 
 
 class PokDengPlayer(Player):
+    """This is player for PokDeng game """
 
     def __init__(self, name: str) -> None:
         super().__init__(name)
@@ -323,6 +323,19 @@ class PokDengPlayer(Player):
             return 'Draw'
         return self.value > dealer.value
 
+    def draw_more(self, game):
+        self.show_hand()
+        while True:
+            ans = input('Want to draw? (Y/N): ')
+            match ans:
+                case 'Y' | 'N':
+                    break
+                case _:
+                    printcolor('[red]Invalid Input[/red] please try again')
+        if ans.upper() == 'Y':
+            self.draw(game.deck.deck, more=True)
+        self.show_hand()
+
     def finalize(self, win=False, dealer_deng=False) -> None:
         if win == 'Draw':
             self.money += self.had_bet
@@ -331,10 +344,11 @@ class PokDengPlayer(Player):
         if win:
             multiple = self.deng() if self.deng else 1
             if self.deng():
-                printcolor(f'{self} {multiple}Deng! and [green]got[/green] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
+                printcolor(
+                    f'{self} {multiple}Deng! and [green]got[/green] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
             else:
                 printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
-            self.money += self.had_bet*(multiple+1)
+            self.money += self.had_bet * (multiple + 1)
 
         else:
             multiple = dealer_deng if dealer_deng else 1
@@ -343,7 +357,7 @@ class PokDengPlayer(Player):
                            f'{self} [red]lose[/red] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
             else:
                 printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
-            self.money -= self.had_bet*multiple
+            self.money -= self.had_bet * multiple
 
         printcolor(f'{self} have {self.money} left.')
         self.had_bet = 0

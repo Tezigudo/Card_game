@@ -4,11 +4,11 @@ __email__ = 'godjangg@gmail.com'
 __version__ = '1.0.1'
 __status__ = 'working'
 
-import Black_Jack
-from time import sleep
-
 from rich import print as printcolor
 from rich.console import Console
+
+import Black_Jack
+
 console = Console()
 
 

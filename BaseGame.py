@@ -4,13 +4,14 @@ __email__ = 'godjangg@gmail.com'
 __version__ = '1.0.0'
 __status__ = 'working'
 
-from Player import Player
-from Card import Card
-from time import sleep
 import os
+from time import sleep
+
+from Card import Card
+from Player import Player
 
 
-class Base_game:
+class BaseGame:
     def __init__(self, name_list: list[str]) -> None:
         self.Player_list = [Player(name) for name in name_list]
         # create an player list
