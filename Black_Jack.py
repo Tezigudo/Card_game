@@ -100,22 +100,6 @@ class Game(BaseGame):
         sleep(3.5)
         self.clear_screen()
 
-    def run(self) -> None:
-        time = 0
-        while len(self.now_player) > 1 or time == 0:
-            time += 1
-            printcolor(f'round{time}:')
-            self.play()
-            self.report_status()
-            self.reset()
-            printcolor('_____________________' * 2 + '\n')
-        else:
-            try:
-                console.print(f'{self.now_player[0]} win', style='green')
-            except IndexError:
-                console.print('Dealer win', style='green')
-            printcolor('_____________________' * 2 + '\n')
-
     @staticmethod
     def show_rule() -> None:
         print()

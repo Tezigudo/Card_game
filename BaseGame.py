@@ -8,7 +8,7 @@ import os
 from time import sleep
 
 from rich.console import Console
-
+from rich import print as printcolor
 from Card import Card
 from Player import Player
 
@@ -71,3 +71,19 @@ class BaseGame:
     @property
     def min_bet(self):
         return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5)
+
+    def run(self) -> None:
+        time = 0
+        while len(self.now_player) > 1 or time == 0:
+            time += 1
+            printcolor(f'round{time}:')
+            self.play()
+            self.report_status()
+            self.reset()
+            printcolor('_____________________' * 2 + '\n')
+        else:
+            try:
+                console.print(f'{self.now_player[0]} win', style='green')
+            except IndexError:
+                console.print('Dealer win', style='green')
+            printcolor('_____________________' * 2 + '\n')

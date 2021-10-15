@@ -8,7 +8,7 @@ from rich import print as printcolor
 from rich.console import Console
 
 import Black_Jack
-
+import Pok_deng
 console = Console(color_system='windows')
 
 
@@ -23,7 +23,7 @@ def main():
         case '1':
             Black_Jack.main()
         case '2':
-            pass
+            Pok_deng.main()
         case 'Q' | 'q':
             return
 

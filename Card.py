@@ -42,8 +42,3 @@ class Card:
         """reset a deck"""
         self.deck = self.create_deck()
         self.shuffle()
-
-
-if __name__ == '__main__':
-    d = Card()
-    print(d.deck)

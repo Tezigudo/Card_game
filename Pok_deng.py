@@ -17,7 +17,7 @@ console = Console(color_system='windows')
 
 class ComputerPlayer(PokDengPlayer):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(self)
         self.name = 'Dealer'
 
     def draw_one_turn(self, game) -> None:
@@ -39,7 +39,7 @@ class Game(BaseGame):
         for player in self.now_player:
             player.play_one_turn()
 
-    def finallize(self):
+    def finalize(self):
         for player in self.Player_list:
             player.finalize(win=player.if_win(self.dealer), dealer_deng=self.dealer.deng())
 
@@ -57,9 +57,9 @@ class Game(BaseGame):
 
 
 def main():
-    pass
+    g = Game(['A', 'B', 'C'])
+    g.play()
 
 
 if __name__ == '__main__':
-    printcolor('this will tmp execute')
-    sleep(3)
+    main()
