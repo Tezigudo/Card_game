@@ -11,10 +11,9 @@ from rich import print as printcolor
 from rich.console import Console
 
 from BaseGame import BaseGame
-from Card import Card
 from Player import BlackJackPlayer
 
-console = Console()
+console = Console(color_system='windows')
 
 
 class ComputerPlayer(BlackJackPlayer):
@@ -43,14 +42,6 @@ class Game(BaseGame):
         self.Player_list = [BlackJackPlayer(name) for name in name_list]
         # create an player list
         self.dealer = ComputerPlayer()  # create an dealer player
-        self.deck = Card()
-
-    def deal_card(self) -> None:
-        """deal card to all player"""
-        for _ in range(2):
-            self.dealer.draw(self.deck.deck)
-            for player in self.now_player:
-                player.draw(self.deck.deck)
 
     def show_every_player_card(self, show_len=False) -> None:
         """show every player card unblinded and show the length of it if show_len"""
@@ -68,9 +59,9 @@ class Game(BaseGame):
             print()
             console.print(f"{player}'s Turn:", style='blue')
             player.draw_one_turn(self)
-            printcolor()
+            print()
             sleep(2)
-            os.system('clear')
+            self.clear_screen()
         self.dealer.draw_one_turn(self)
 
     def finalize(self) -> None:
@@ -88,7 +79,7 @@ class Game(BaseGame):
         elif self.dealer.blackjack():
             printcolor('Dealer Blackjack!')
             for player in self.now_player:
-                if not player.blackjack:
+                if not player.blackjack():
                     player.finalize(win=False)
                 else:
                     player.finalize(win='Draw')

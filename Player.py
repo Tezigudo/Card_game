@@ -9,7 +9,7 @@ from time import sleep
 from rich import print as printcolor
 from rich.console import Console
 
-console = Console()
+console = Console(color_system='windows')
 
 
 class Player:
@@ -60,7 +60,7 @@ class Player:
                     s += 10
                 case _:
                     s += int(val)
-        return s
+        return s%10
 
     @classmethod
     def set_player_money(cls, money: int) -> None:
@@ -294,13 +294,13 @@ class PokDengPlayer(Player):
         super().__init__(name)
         self.money = PokDengPlayer.initial_money
 
-    def pok(self):
+    def pok(self) -> int:
         if len(self) == 2:
             if self.value == 8:
-                return 'Pok8'
+                return 8
             if self.value == 9:
-                return 'Pok9'
-        return False
+                return 9
+        return 0
 
     def deng(self) -> int:
         """
@@ -323,7 +323,7 @@ class PokDengPlayer(Player):
             return 'Draw'
         return self.value > dealer.value
 
-    def draw_more(self, game):
+    def draw_one_turn(self, game) -> None:
         self.show_hand()
         while True:
             ans = input('Want to draw? (Y/N): ')

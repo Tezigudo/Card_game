@@ -7,8 +7,12 @@ __status__ = 'working'
 import os
 from time import sleep
 
+from rich.console import Console
+
 from Card import Card
 from Player import Player
+
+console = Console(color_system='windows')
 
 
 class BaseGame:
@@ -28,6 +32,20 @@ class BaseGame:
         for player in self.now_player:
             player.call(minbet=min_bet)
             sleep(1)
+            print()
+
+    def deal_card(self) -> None:
+        """deal card to all player"""
+        for _ in range(2):
+            self.dealer.draw(self.deck.deck)
+            for player in self.now_player:
+                player.draw(self.deck.deck)
+
+    def show_every_player_card(self) -> None:
+        for player in self.now_player:
+            console.print(f'{player}:', style='bold cyan')
+            print(f'{player} hand are: {player.hand}')
+            console.print(f'value: {player.value}')
             print()
 
     def set_played(self) -> None:
