@@ -336,6 +336,18 @@ class PokDengPlayer(Player):
             self.draw(game.deck.deck, more=True)
         self.show_hand()
 
+    def play_one_turn(self, player):
+        print()
+        console.print(f"{player}'s Turn:", style='blue')
+        player.show_hand()
+        if not player.pok():
+            player.draw_one_turn(self)
+        else:
+            print(f'{player} POK{player.pok()}!')
+        print()
+        sleep(2)
+        self.clear_screen()
+
     def finalize(self, win=False, dealer_deng=False) -> None:
         if win == 'Draw':
             self.money += self.had_bet
@@ -351,7 +363,7 @@ class PokDengPlayer(Player):
             self.money += self.had_bet * (multiple + 1)
 
         else:
-            multiple = dealer_deng if dealer_deng else 1
+            multiple = dealer_deng or 1
             if self.deng():
                 printcolor(f'Dealer {multiple}Deng!'
                            f'{self} [red]lose[/red] {self.had_bet}x{multiple} = {self.had_bet * multiple}')

@@ -25,7 +25,6 @@ class ComputerPlayer(PokDengPlayer):
             self.draw(game.deck.deck, more=True)
 
 
-
 class Game(BaseGame):
     def __init__(self, name_list: list[str]) -> None:
         super().__init__(name_list)
@@ -33,26 +32,28 @@ class Game(BaseGame):
         self.dealer = ComputerPlayer()
 
     def draw_all_player(self) -> None:
+        if self.dealer.pok():
+            printcolor(f'DEALER POK{self.dealer.pok()}')
+            return
         self.dealer.draw_one_turn(self)
+        for player in self.now_player:
+            player.play_one_turn()
+
+    def finallize(self):
         for player in self.Player_list:
-            print()
-            console.print(f"{player}'s Turn:", style='blue')
-            player.show_hand()
-            if not player.pok():
-                player.draw_one_turn(self)
-            else:
-                print(f'{player} POK{player.pok()}!')
-            print()
-            sleep(2)
-            self.clear_screen()
-
-
+            player.finalize(win=player.if_win(self.dealer), dealer_deng=self.dealer.deng())
 
     def play(self):
+        self.set_played()
+        self.call_all()
+        self.clear_screen()
         self.deal_card()
-
-
-
+        self.draw_all_player()
+        self.show_every_player_card()
+        self.finalize()
+        self.set_played()
+        sleep(3.5)
+        self.clear_screen()
 
 
 def main():
