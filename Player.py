@@ -27,7 +27,7 @@ class Player:
         """
         self.name = name
         self.hand = []
-        self.money = Player.initial_money
+        self.money = self.get_initial_money()
         self.had_bet = 0
         self.played = None
 
@@ -41,6 +41,10 @@ class Player:
 
     def __len__(self):
         return len(self.hand)
+
+    @classmethod
+    def get_initial_money(cls):
+        return cls.initial_money
 
     @property
     def value(self) -> int:
@@ -60,11 +64,11 @@ class Player:
                     s += 10
                 case _:
                     s += int(val)
-        return s%10
+        return s % 10
 
     @classmethod
     def set_player_money(cls, money: int) -> None:
-        """set all player money when"""
+        """set all player money"""
         cls.initial_money = money
 
     def draw(self, deck, more=False) -> None:
@@ -181,13 +185,6 @@ class Player:
 class BlackJackPlayer(Player):
     """create a black jack object that inherit from player"""
 
-    def __init__(self, name) -> None:
-        """
-        :param name: str
-        """
-        super().__init__(name)
-        self.money = BlackJackPlayer.initial_money
-
     @property
     def value(self) -> int:
         """return player value"""
@@ -289,10 +286,6 @@ class BlackJackPlayer(Player):
 
 class PokDengPlayer(Player):
     """This is player for PokDeng game """
-
-    def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.money = PokDengPlayer.initial_money
 
     def pok(self) -> int:
         if len(self) == 2:
