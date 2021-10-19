@@ -12,7 +12,7 @@ from rich import print as printcolor
 from Card import Card
 from Player import Player
 
-console = Console(color_system='windows')
+console = Console()
 
 
 class BaseGame:

@@ -13,7 +13,7 @@ from rich.console import Console
 from BaseGame import BaseGame
 from Player import BlackJackPlayer
 
-console = Console(color_system='windows')
+console = Console()
 
 
 class ComputerPlayer(BlackJackPlayer):

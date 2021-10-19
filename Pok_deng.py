@@ -12,7 +12,7 @@ from rich.console import Console
 from BaseGame import BaseGame
 from Player import PokDengPlayer
 
-console = Console(color_system='windows')
+console = Console()
 
 
 class ComputerPlayer(PokDengPlayer):
@@ -37,28 +37,64 @@ class Game(BaseGame):
             return
         self.dealer.draw_one_turn(self)
         for player in self.now_player:
-            player.play_one_turn()
+            player.play_one_turn(self)
+
+    @property
+    def min_bet(self):
+        return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5 / 3)
 
     def finalize(self):
         for player in self.Player_list:
-            player.finalize(win=player.if_win(self.dealer), dealer_deng=self.dealer.deng())
+            player.finalize(self.dealer, win=player.if_win(self.dealer))
 
     def play(self):
         self.set_played()
         self.call_all()
-        self.clear_screen()
+        # self.clear_screen()
         self.deal_card()
         self.draw_all_player()
         self.show_every_player_card()
+        self.dealer
         self.finalize()
         self.set_played()
-        sleep(3.5)
-        self.clear_screen()
+        sleep(3)
+        # self.clear_screen()
+
+
+def play() -> None:
+    """
+    This function play entire game
+    """
+    Game.clear_screen()
+    try:
+        money = float(input('Enter each player money: '))
+        PokDengPlayer.set_player_money(money)
+        player_list = []
+        print()
+        while True:
+            name = input(f'Enter Player{len(player_list) + 1} name: ')
+            player_list.append(name)
+            print(f'now Playerlist: {player_list}')
+            printcolor('[green]Y[/green]/[red]N[/red]', end=': ')
+            tmp = input()
+            match tmp:
+                case 'N' | 'n':
+                    break
+                case 'Y' | 'y':
+                    continue
+                case _:
+                    print('Invalid input')
+
+        g = Game(player_list)
+        g.run()
+    except ValueError:
+        printcolor('[red]Invalid Input[/red]')
+        sleep(1)
+        play()
 
 
 def main():
-    g = Game(['A', 'B', 'C'])
-    g.play()
+    play()
 
 
 if __name__ == '__main__':

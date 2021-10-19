@@ -9,7 +9,7 @@ from time import sleep
 from rich import print as printcolor
 from rich.console import Console
 
-console = Console(color_system='windows')
+console = Console()
 
 
 class Player:
@@ -49,11 +49,6 @@ class Player:
     @property
     def value(self) -> int:
         """return value from calculated value """
-        return self.calculate_val
-
-    @value.getter
-    def calculate_val(self) -> int:
-        """calculate value"""
         s = 0
         for card in self.hand:
             val = card.split()[0]
@@ -188,11 +183,6 @@ class BlackJackPlayer(Player):
     @property
     def value(self) -> int:
         """return player value"""
-        return self.calculate_val
-
-    @value.getter
-    def calculate_val(self) -> int:
-        """calculate value for player and return in"""
         s = ace_count = 0
         for card in self.hand:
             val = card.split()[0]
@@ -320,7 +310,7 @@ class PokDengPlayer(Player):
         self.show_hand()
         while True:
             ans = input('Want to draw? (Y/N): ')
-            match ans:
+            match ans.upper():
                 case 'Y' | 'N':
                     break
                 case _:
@@ -329,37 +319,40 @@ class PokDengPlayer(Player):
             self.draw(game.deck.deck, more=True)
         self.show_hand()
 
-    def play_one_turn(self, player):
+    def play_one_turn(self, game):
         print()
-        console.print(f"{player}'s Turn:", style='blue')
-        player.show_hand()
-        if not player.pok():
-            player.draw_one_turn(self)
+        console.print(f"{self}'s Turn:", style='blue')
+        self.show_hand()
+        if not self.pok():
+            self.draw_one_turn(game)
         else:
-            print(f'{player} POK{player.pok()}!')
+            print(f'{self} POK{self.pok()}!')
         print()
         sleep(2)
-        self.clear_screen()
+        # game.clear_screen()
 
-    def finalize(self, win=False, dealer_deng=False) -> None:
+    def finalize(self, dealer, win=False) -> None:
         if win == 'Draw':
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
 
         if win:
-            multiple = self.deng() if self.deng else 1
+            multiple = self.deng() or 1
             if self.deng():
                 printcolor(
-                    f'{self} {multiple}Deng! and [green]got[/green] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
+                    f'{self} {multiple}Deng!\n'
+                    f'{self} hand are {self.hand} '
+                    f'and [green]got[/green] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
             else:
                 printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
             self.money += self.had_bet * (multiple + 1)
 
         else:
-            multiple = dealer_deng or 1
+            multiple = dealer.deng() or 1
             if self.deng():
-                printcolor(f'Dealer {multiple}Deng!'
-                           f'{self} [red]lose[/red] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
+                printcolor(f'Dealer {multiple}Deng!\n'
+                           f'Dealer hand are {dealer.hand} '
+                           f'and [red]lose[/red] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
             else:
                 printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
             self.money -= self.had_bet * multiple

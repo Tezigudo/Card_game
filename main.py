@@ -9,7 +9,7 @@ from rich.console import Console
 
 import Black_Jack
 import Pok_deng
-console = Console(color_system='windows')
+console = Console()
 
 
 def main():
