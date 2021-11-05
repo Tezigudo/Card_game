@@ -50,15 +50,15 @@ class Game(BaseGame):
     def play(self):
         self.set_played()
         self.call_all()
-        # self.clear_screen()
+        self.clear_screen()
         self.deal_card()
         self.draw_all_player()
         self.show_every_player_card()
-        self.dealer
+        self.dealer.show_hand()
         self.finalize()
         self.set_played()
         sleep(3)
-        # self.clear_screen()
+        self.clear_screen()
 
 
 def play() -> None:

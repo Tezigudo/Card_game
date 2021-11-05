@@ -79,6 +79,7 @@ class Player:
         console.print(f'value = {self.value}')
 
     def same_card(self) -> bool:
+        """ return if same card and deng """
         return len({card.split()[0] for card in self.hand}) == 1 and 1 < len(self.hand) < 4
 
     def bet(self, money: int) -> None:
@@ -307,7 +308,6 @@ class PokDengPlayer(Player):
         return self.value > dealer.value
 
     def draw_one_turn(self, game) -> None:
-        self.show_hand()
         while True:
             ans = input('Want to draw? (Y/N): ')
             match ans.upper():
@@ -329,14 +329,14 @@ class PokDengPlayer(Player):
             print(f'{self} POK{self.pok()}!')
         print()
         sleep(2)
-        # game.clear_screen()
+        game.clear_screen()
 
     def finalize(self, dealer, win=False) -> None:
         if win == 'Draw':
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
 
-        if win:
+        elif win:
             multiple = self.deng() or 1
             if self.deng():
                 printcolor(
@@ -348,13 +348,13 @@ class PokDengPlayer(Player):
             self.money += self.had_bet * (multiple + 1)
 
         else:
-            multiple = dealer.deng() or 1
-            if self.deng():
+            multiple = dealer.deng()
+            if dealer.deng():
                 printcolor(f'Dealer {multiple}Deng!\n'
                            f'Dealer hand are {dealer.hand} '
                            f'and [red]lose[/red] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
             else:
-                printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
+                printcolor(f'{self} lose and [red]lose[/red] {self.had_bet}')
             self.money -= self.had_bet * multiple
 
         printcolor(f'{self} have {self.money} left.')
