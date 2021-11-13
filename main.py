@@ -7,8 +7,7 @@ __status__ = 'working'
 from rich import print as printcolor
 from rich.console import Console
 
-import Black_Jack
-import Pok_deng
+from Game import Pok_deng, Black_Jack
 console = Console()
 
 
