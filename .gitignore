@@ -1,5 +1,5 @@
 __pycache__/
-.idea/
-.history/
-.DS_Store
+.*
+*.pyc
 Myexperiment.ipynb
+__init__.py
