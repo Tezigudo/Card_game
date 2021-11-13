@@ -40,16 +40,28 @@ class Player:
         """represent class name and object name"""
         return f'Player -> {self.name}'
 
-<<<<<<< HEAD:Player/Player.py
     def __len__(self):
         return len(self.hand)
+
+    @property
+    def name(self):
+
+        return self.__name
+
+    @name.setter
+    def name(self, name):
+        if type(name) != str:
+            raise TypeError('Name must be string')
+        if not name:
+            raise ValueError('Name cant be empty')
+        if len(name) > 10:
+            raise ValueError('Invalid name')
+        self.__name = name.capitalize()
 
     @classmethod
     def get_initial_money(cls):
         return cls.initial_money
 
-=======
->>>>>>> main:Blackjack_new/Player.py
     @property
     def value(self) -> int:
         """return value from calculated value """
@@ -121,18 +133,7 @@ class Player:
         self.bet(minbet)
 
     def call(self, minbet) -> None:
-        """call for each person
-
-        Parameters
-        ----------
-        minbet : int
-            [description]
-
-        Raises
-        ------
-        ValueError
-            [description]
-        """
+        """call for each person """
         if self.money < minbet:
             self.all_in()
             printcolor(f'{self} was [red]FORCE[/red] to [blue]ALL-IN[/blue]')
@@ -141,12 +142,8 @@ class Player:
         printcolor(f'{self} amount is: {self.money}')
         while True:
             printcolor('[bold yellow](All-IN | all in | all-in | ALL IN)[/bold yellow] to [blue]ALL-IN[/blue]')
-<<<<<<< HEAD:Player/Player.py
             printcolor(
                 '[bold orange](MIN-BET | min bet | min-bet | MIN-BET)[/bold orange] to bet of value of [yellow]minbet[/yellow]')
-=======
-            printcolor('[bold yellow](MIN-BET | min bet | min-bet | MIN-BET)[/bold yellow] to bet of value of [yellow]minbet[/yellow]')
->>>>>>> main:Blackjack_new/Player.py
             console.print(f'Please enter amount to bet ({minbet=})', end=': ')
             amount = input().strip()
             try:
@@ -356,6 +353,16 @@ class PokDengPlayer(Player):
         game.clear_screen()
 
     def finalize(self, dealer, win=False) -> None:
+        """ Finallize of player in end of turn
+        whatever gain or lose money
+
+        Parameters
+        ----------
+        dealer : Player
+            Dealer
+        win : bool, optional
+            win can be whatever bool or Draw, by default False
+        """
         if win == 'Draw':
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
