@@ -1,6 +1,7 @@
 __pycache__/
 .idea/
 .vscode/
+.DS_Store
 .*
 *.pyc
 Myexperiment.ipynb
