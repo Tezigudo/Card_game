@@ -21,9 +21,12 @@ class ComputerPlayer(BlackJackPlayer):
     num = 0
 
     def __init__(self) -> None:
-        super().__init__(self)
         ComputerPlayer.num += 1
         self.name = 'BOT' + str(ComputerPlayer.num)
+        self.hand = []
+        self.money = self.get_initial_money()
+        self.had_bet = 0
+        self.played = None
 
     def draw_one_turn(self, game) -> None:
         """draw card until computer hand values more than 17"""
@@ -104,41 +107,6 @@ class Game(BaseGame):
         sleep(3.5)
         self.clear_screen()
 
-<<<<<<< HEAD:Game/Black_Jack.py
-=======
-    @property
-    def now_player(self) -> list[BlackJackPlayer]:
-        """return an player which not knock(money>=0)"""
-        return [player for player in self.Player_list if player.played]
-
-    def reset(self) -> None:
-        self.deck.reset()
-        self.dealer.reset()
-        for player in self.Player_list:
-            player.reset()
-
-    def run(self) -> None:
-        time = 0
-        while len(self.now_player) > 1 or time == 0:
-            time += 1
-            printcolor(f'round{time}:')
-            self.play()
-            self.report_status()
-            self.reset()
-            printcolor('_____________________' * 2 + '\n')
-        else:
-            try:
-                console.print(f'{self.now_player[0]} win', style='green')
-            except IndexError:
-                console.print('Dealer win', style='green')
-            printcolor('_____________________' * 2 + '\n')
-
-    @staticmethod
-    def clear_screen() -> None:
-        """ clear a screen """
-        os.system('clear')
-
->>>>>>> main:Blackjack_new/Game.py
     @staticmethod
     def show_rule() -> None:
         print()
@@ -160,13 +128,10 @@ class Game(BaseGame):
                    'Then compare each [blue]player[/blue] and [blue]dealer[/blue] value.\n'
                    'if player [green]money[/green] is less than '
                    '0 that player [red]will be [b]ELIMINATED[/b][/red]\n')
-<<<<<<< HEAD:Game/Black_Jack.py
-=======
 
     @property
     def min_bet(self):
         return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5)
->>>>>>> main:Blackjack_new/Game.py
 
 
 def play() -> None:

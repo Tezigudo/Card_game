@@ -17,8 +17,11 @@ console = Console()
 
 class ComputerPlayer(PokDengPlayer):
     def __init__(self) -> None:
-        super().__init__(self)
         self.name = 'Dealer'
+        self.hand = []
+        self.money = self.get_initial_money()
+        self.had_bet = 0
+        self.played = None
 
     def draw_one_turn(self, game) -> None:
         if self.value < 6:
@@ -57,7 +60,7 @@ class Game(BaseGame):
         self.dealer.show_hand()
         self.finalize()
         self.set_played()
-        sleep(3)
+        sleep(3)   
         self.clear_screen()
 
 
@@ -80,7 +83,7 @@ def play() -> None:
             match tmp:
                 case 'N' | 'n':
                     break
-                case 'Y' | 'y':
+                case 'Y' | 'y': 
                     continue
                 case _:
                     print('Invalid input')

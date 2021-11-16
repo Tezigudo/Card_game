@@ -1,3 +1,4 @@
 import sys
+import os
 
-sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
+sys.path.insert(1, os.path.join(sys.path[0], 'Game'))
