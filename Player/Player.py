@@ -46,17 +46,18 @@ class Player:
     @property
     def name(self):
 
-        return self.__name
+        return self._name
 
     @name.setter
     def name(self, name):
+        print(name, type(name))
         if type(name) != str:
             raise TypeError('Name must be string')
         if not name:
             raise ValueError('Name cant be empty')
         if len(name) > 10:
             raise ValueError('Invalid name')
-        self.__name = name.capitalize()
+        self._name = name.capitalize()
 
     @classmethod
     def get_initial_money(cls):
