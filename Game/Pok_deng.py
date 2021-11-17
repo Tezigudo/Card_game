@@ -44,7 +44,7 @@ class Game(BaseGame):
 
     @property
     def min_bet(self):
-        return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 9)
+        return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 7)
 
     def finalize(self):
         for player in self.now_player:
@@ -60,8 +60,24 @@ class Game(BaseGame):
         self.dealer.show_hand()
         self.finalize()
         self.set_played()
-        sleep(3)   
+        sleep(3)
         self.clear_screen()
+
+    @staticmethod
+    def show_rule() -> None:
+        print()
+        printcolor('[b]Pok deng Rule[/b]')
+        printcolor('list of value in Pokdeng game are:\n'
+                   '[blue]POK8[/blue] and [blue]POK9[/blue] --> Player have 2 card and value are 8 and 9\n'
+                   '[blue]multiple[/blue] [cyan]DENG[/cyan] --> Player have all same val but not same suit(optional)\n'
+                   'and will get  a [blue]multiple[/blue]X of money'
+                   'Player won whether value more then dealer\n')
+        printcolor('At first Every player bet\n'
+                   'Then Dealer Deal 2 card to each Player hand'
+                   '(Include himself)\n'
+                   'then each player will choose whether to [cyan]draw or not[/cyan]\n'
+                   'if [blue]Dealer POK[/blue] each player [red]will not able to Draw more[/red]\n'
+                   'but if player pok! Player will be judge whether [greem]gain[/green] or [red]lose[/red]\n')
 
 
 def play() -> None:
@@ -83,7 +99,7 @@ def play() -> None:
             match tmp:
                 case 'N' | 'n':
                     break
-                case 'Y' | 'y': 
+                case 'Y' | 'y':
                     continue
                 case _:
                     print('Invalid input')
@@ -96,8 +112,35 @@ def play() -> None:
         play()
 
 
-def main():
-    play()
+def main() -> None:
+    """main func"""
+    while True:
+        console.print('Welcome to Pok-Deng game', style='blue')
+        console.print('1.) PLay a game', style='blue')
+        console.print('2.) Read rule and win condition', style='blue')
+        console.print('3.) Quit', style='blue')
+        choice = input('Please choose(1/2/3): ')
+        match choice:
+            case '1':
+                play()
+                printcolor('Play again? ([green]Y[/green]/[red]N[/red]): ', end='')
+                tmp = input()
+                if tmp.upper() == 'Y':
+                    play()
+                elif tmp.upper() == 'N':
+                    continue
+                else:
+                    print('Invalid input')
+                    continue
+            case '2':
+                Game.show_rule()
+            case '3':
+                for i in range(3, 0, -1):
+                    printcolor(f'Game will exit in {i}', end='\r')
+                    sleep(1)
+                break
+            case _:
+                printcolor('[red]Invalid Input[/red]')
 
 
 if __name__ == '__main__':
