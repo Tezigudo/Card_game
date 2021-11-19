@@ -8,18 +8,18 @@ class Save:
         print(f'name = {player.name}')
 
 
-        try:
-            with open('history.json', 'r') as data:
-                history = json.load(data)
+        # try:
+        #     with open('history.json', 'r') as data:
+        #         history = json.load(data)
 
-        except FileNotFoundError:
-            with open('history.json', 'w') as data:
-                json.dump(nick_score, data, indent=4)
+        # except FileNotFoundError:
+        #     with open('history.json', 'w') as data:
+        #         json.dump(nick_score, data, indent=4)
 
-        else:
-            history.update(nick_score)
-            with open('history.json', 'w') as data:
-                json.dump(history, data, indent=4)
+        # else:
+        #     history.update(nick_score)
+        #     with open('history.json', 'w') as data:
+        #         json.dump(history, data, indent=4)
 
         print('Progess Saved :)')
 

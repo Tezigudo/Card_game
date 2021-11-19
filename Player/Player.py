@@ -4,14 +4,19 @@ __email__ = 'godjangg@gmail.com'
 __version__ = '1.0.0'
 __status__ = 'working'
 
+import sys
 from time import sleep
+
+sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
 
 from rich import print as printcolor
 from rich.console import Console
 
+import turtle
 
 console = Console()
-
+with open('Deck/Card_pic/2C.png', 'rb') as pic:
+    print(pic.read())
 
 class Player:
     """define a Player object using through all card game"""
@@ -50,7 +55,6 @@ class Player:
 
     @name.setter
     def name(self, name):
-        print(name, type(name))
         if type(name) != str:
             raise TypeError('Name must be string')
         if not name:
@@ -94,6 +98,9 @@ class Player:
         """Show hand of player """
         printcolor(f'{self.name} had {self.hand}')
         console.print(f'value = {self.value}')
+
+        # TODO: put my a turtle graphic here
+
 
     def same_card(self) -> bool:
         """ return if same card and deng """

@@ -66,11 +66,6 @@ class Game(BaseGame):
             self.clear_screen()
         self.dealer.draw_one_turn(self)
 
-    def report_status(self):
-        print('current Game status:')
-        for player in self.Player_list:
-            player.show_status()
-
     def finalize(self) -> None:
         """Finalize the game whether player get money or lose money"""
         printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
