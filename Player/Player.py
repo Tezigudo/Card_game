@@ -15,8 +15,8 @@ from rich.console import Console
 import turtle
 
 console = Console()
-with open('Deck/Card_pic/2C.png', 'rb') as pic:
-    print(pic.read())
+# with open('Deck/Card_pic/2C.png', 'rb') as pic:
+#     print(pic.read())
 
 class Player:
     """define a Player object using through all card game"""
@@ -126,11 +126,12 @@ class Player:
         printcolor(f'{self} have {self.money} left.')
 
     def if_win(self, dealer) -> str | bool:
-        """check whether player value more that dealer value"""
+        """
+        check whether player win or not if draw it will return 'Draw'
+        """
         if self.value == dealer.value:
             return 'Draw'
-        else:
-            return self.value > dealer.value
+        return self.value > dealer.value
 
     def all_in(self) -> None:
         """ Player all in!"""
@@ -318,15 +319,6 @@ class PokDengPlayer(Player):
                 return 2
             return 3
         return 0
-
-    def if_win(self, dealer) -> str | bool:
-        """
-        check whether player win or not if draw it will return 'Draw'
-        """
-
-        if self.value == dealer.value:
-            return 'Draw'
-        return self.value > dealer.value
 
     def draw_one_turn(self, game) -> None:
         """Draw one turn
