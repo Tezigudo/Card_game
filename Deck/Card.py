@@ -40,5 +40,5 @@ class Card:
 
     def reset(self) -> None:
         """reset a deck"""
-        self.deck = self.create_deck()
+        self.deck = self._create_deck()
         self.shuffle()

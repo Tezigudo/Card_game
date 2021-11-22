@@ -14,6 +14,7 @@ from rich.console import Console
 
 from Deck.Card import Card
 from Player.Player import Player
+from database import Save
 
 console = Console()
 
@@ -23,6 +24,7 @@ class BaseGame:
         self.Player_list = [Player(name) for name in name_list]
         # create an player list
         self.deck = Card()
+        self.save = Save()
 
     def report_status(self):
         print('current Game status:')
@@ -83,10 +85,4 @@ class BaseGame:
             self.play()
             self.report_status()
             self.reset()
-            printcolor('_____________________' * 2 + '\n')
-        else:
-            try:
-                console.print(f'{self.now_player[0]} win', style='green')
-            except IndexError:
-                console.print('Dealer win', style='green')
             printcolor('_____________________' * 2 + '\n')

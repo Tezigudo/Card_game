@@ -79,6 +79,16 @@ class Game(BaseGame):
                    'if [blue]Dealer POK[/blue] each player [red]will not able to Draw more[/red]\n'
                    'but if player pok! Player will be judge whether [greem]gain[/green] or [red]lose[/red]\n')
 
+    def run(self):
+        super().run()
+        try:
+            winner = self.now_player[0]
+            console.print(f'{winner} win', style='green')
+            self.save.add_score('Pok_Deng', winner.name, 1)
+        except IndexError:
+            console.print('Dealer win', style='green')
+        printcolor('_____________________' * 2 + '\n')
+
 
 def play() -> None:
     """

@@ -128,6 +128,16 @@ class Game(BaseGame):
     def min_bet(self):
         return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5)
 
+    def run(self):
+        super().run()
+        try:
+            winner = self.now_player[0]
+            console.print(f'{winner} win', style='green')
+            self.save.add_score('Black_Jack', winner.name, 1)
+        except IndexError:
+            console.print('Dealer win', style='green')
+        printcolor('_____________________' * 2 + '\n')
+
 
 def play() -> None:
     """
