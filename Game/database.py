@@ -8,7 +8,6 @@ class Save:
         """Initilize with all current history(database)
         """
         self.database = []
-        print(sys.path[:3])
         with open('history.csv', 'r') as data_file:
             data = csv.DictReader(data_file)
             for each_data in data:

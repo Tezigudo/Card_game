@@ -49,7 +49,7 @@ class BaseGame:
     def show_every_player_card(self) -> None:
         for player in self.now_player:
             console.print(f'{player}:', style='bold cyan')
-            print(f'{player} hand are: {player.hand}x ')
+            print(f'{player} hand are: {player.hand} ')
             console.print(f'value: {player.value}')
             print()
 

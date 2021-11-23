@@ -12,11 +12,10 @@ sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
 from rich import print as printcolor
 from rich.console import Console
 
-import turtle
+from Hand import Screen
 
 console = Console()
-# with open('Deck/Card_pic/2C.png', 'rb') as pic:
-#     print(pic.read())
+
 
 class Player:
     """define a Player object using through all card game"""
@@ -36,6 +35,7 @@ class Player:
         self.money = self.get_initial_money()
         self.had_bet = 0
         self.played = None
+        self._screen = Screen()
 
     def __str__(self) -> str:
         """represent Player's name when printcolor player object"""
@@ -49,8 +49,7 @@ class Player:
         return len(self.hand)
 
     @property
-    def name(self):
-
+    def name(self): 
         return self._name
 
     @name.setter
@@ -99,7 +98,7 @@ class Player:
         printcolor(f'{self.name} had {self.hand}')
         console.print(f'value = {self.value}')
 
-        # TODO: put my a turtle graphic here
+        self._screen.show_hand(self)
 
 
     def same_card(self) -> bool:
@@ -234,6 +233,17 @@ class BlackJackPlayer(Player):
         else:
             printcolor(f'value = [red]{self.value}[/red]')
 
+        if self.blackjack():
+            self._screen.painter.goto(-200, 190)
+            self._screen.painter.pencolor('')
+            self._screen.write_rainbow('BLACK JACK!')
+        elif not self.check_if_hand_valid():
+            self._screen.painter.goto(-80, 180)
+            self._screen.painter.pencolor('orange')
+            self._screen.painter.write('BURST!', True, align="left", font=("Menlo", 40, "bold"))
+
+        self._screen.show_hand(self)
+
     def show_unblind_card(self) -> None:
         """show unblinded card"""
         printcolor(f'[blue]{self}:[/blue]')
@@ -338,6 +348,7 @@ class PokDengPlayer(Player):
         if ans.upper() == 'Y':
             self.draw(game.deck.deck, more=True)
         self.show_hand()
+        self._screen.reset()
 
     def play_one_turn(self, game):
 

@@ -9,8 +9,10 @@ from time import sleep
 from rich import print as printcolor
 from rich.console import Console
 
-from BaseGame import BaseGame
+import BaseGame
+BaseGame = BaseGame.BaseGame
 from Player.Player import BlackJackPlayer
+
 
 console = Console()
 
