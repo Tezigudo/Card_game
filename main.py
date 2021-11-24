@@ -1,8 +1,3 @@
-__author__ = 'Preawpan Thamapipol(Godiez1)'
-__copyright__ = 'Godiez1 Github'
-__email__ = 'godjangg@gmail.com'
-__version__ = '1.0.1'
-__status__ = 'working'
 
 from rich import print as printcolor
 from rich.console import Console
@@ -11,7 +6,9 @@ from Game import Pok_deng, Black_Jack
 console = Console()
 
 
-def main():
+def main() -> None:
+    """This is main part
+    """
     printcolor('[blue]LOBBY[/blue]')
     printcolor('1 [blue]-->[/blue] [cyan]BlackJack[cyan]')
     printcolor('2 [blue]-->[/blue] [cyan]Pok-Deng[cyan]')

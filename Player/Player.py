@@ -1,8 +1,3 @@
-__author__ = 'Preawpan Thamapipol(Godiez1)'
-__copyright__ = 'Godiez1 Github'
-__email__ = 'godjangg@gmail.com'
-__version__ = '1.0.0'
-__status__ = 'working'
 
 import sys
 from time import sleep
@@ -375,7 +370,7 @@ class PokDengPlayer(Player):
         self._screen.show_hand(self)
 
 
-    def play_one_turn(self, game):
+    def play_one_turn(self, game) -> None:
 
         print()
         console.print(f"{self}'s Turn:", style='blue')

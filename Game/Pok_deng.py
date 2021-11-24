@@ -17,7 +17,12 @@ console = Console()
 
 
 class ComputerPlayer(PokDengPlayer):
+    """create an computer player for PokDeng
+    """
     def __init__(self) -> None:
+        """Initialize a pokdeng computer player
+        with name is dealer
+        """
         self.name = 'Dealer'
         self.hand = []
         self.money = self.get_initial_money()
@@ -26,17 +31,36 @@ class ComputerPlayer(PokDengPlayer):
         self._screen = Screen()
 
     def draw_one_turn(self, game) -> None:
+        """draw one turn for computer player
+
+        Parameters
+        ----------
+        game : Game
+            a PokDengGame object
+        """
         if self.value < 6:
             self.draw(game.deck.deck, more=True)
 
 
 class Game(BaseGame):
+    """PokDengGame
+    """
     def __init__(self, name_list: list[str]) -> None:
-        super().__init__(name_list)
+        """Initialize a PokdengGame object
+
+        Parameters
+        ----------
+        name_list : list of name
+            list of player name
+        """
+        super().__init__(name_list)  # inherit previous initialize of basegame
+        # create an player list that contain a list of PokdengPlayer object
         self.Player_list = [PokDengPlayer(name) for name in name_list]
-        self.dealer = ComputerPlayer()
+        self.dealer = ComputerPlayer()  # create a dealer player object
 
     def draw_all_player(self) -> None:
+        """Draw all player
+        """
         if self.dealer.pok():
             printcolor(f'DEALER POK{self.dealer.pok()}')
             return
@@ -46,13 +70,24 @@ class Game(BaseGame):
 
     @property
     def min_bet(self):
+        """min bet of each player in the game
+
+        Returns
+        -------
+        int
+            a minbet of each player
+        """
         return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 7)
 
     def finalize(self):
+        """Finalize each player in now player(player that money > 0)
+        """
         for player in self.now_player:
             player.finalize(self.dealer, win=player.if_win(self.dealer))
 
     def play(self):
+        """play one PokDeng game
+        """
         self.set_played()
         self.call_all()
         self.clear_screen()
@@ -67,6 +102,8 @@ class Game(BaseGame):
 
     @staticmethod
     def show_rule() -> None:
+        """Show a rule of game
+        """
         print()
         printcolor('[b]Pok deng Rule[/b]')
         printcolor('list of value in Pokdeng game are:\n'
@@ -82,12 +119,16 @@ class Game(BaseGame):
                    'but if player pok! Player will be judge whether [green]gain[/green] or [red]lose[/red]\n')
 
     def run(self):
-        super().run()
+        """ run a game and summary winner
+        """
+        super().run()  # inherit all method of run function in basegame
         try:
+            # winner is the now player in the list(now it have 1 player left)
+            # then it will be now_player[0]
             winner = self.now_player[0]
             console.print(f'{winner} win', style='green')
-            self.save.add_score('Pok_Deng', winner.name, 1)
-        except IndexError:
+            self.save.add_score('Pok_Deng', winner.name, 1)  # save score into database
+        except IndexError:  # catching exception if all player loses then dealer will win
             console.print('Dealer win', style='green')
         printcolor('_____________________' * 2 + '\n')
 
@@ -99,7 +140,7 @@ def play() -> None:
     Game.clear_screen()
     try:
         money = float(input('Enter each player money: ').strip())
-        PokDengPlayer.set_player_money(money)
+        PokDengPlayer.set_player_money(money)  # set money for all PokDengPlayer
         player_list = []
         print()
         while True:
@@ -116,9 +157,9 @@ def play() -> None:
                 case _:
                     print('Invalid input')
 
-        g = Game(player_list)
+        g = Game(player_list)  # creating a game object
         g.run()
-    except ValueError:
+    except ValueError:  # catching exception that unnumeric input from player
         printcolor('[red]Invalid Input[/red]')
         sleep(1)
         play()
@@ -146,9 +187,9 @@ def main() -> None:
 
                     continue
             case '2':
-                Game.show_rule()
+                Game.show_rule()  # showrule
             case '3':
-                for i in range(3, 0, -1):
+                for i in range(3, 0, -1):  # countdown
                     printcolor(f'Game will exit in {i}', end='\r')
                     sleep(1)
                 print()

@@ -1,8 +1,6 @@
-__author__ = 'Preawpan Thamapipol(Godiez1)'
-__copyright__ = 'Godiez1 Github'
-__email__ = 'godjangg@gmail.com'
-__version__ = '1.0.1'
-__status__ = 'working'
+"""
+This is PokDeng Game that contain ComputerPlayer and Game
+"""
 
 from time import sleep
 
@@ -12,6 +10,7 @@ from rich.console import Console
 import BaseGame
 BaseGame = BaseGame.BaseGame
 from Player.Player import BlackJackPlayer
+from Player.Hand import Screen
 
 
 console = Console()
@@ -20,17 +19,16 @@ console = Console()
 class ComputerPlayer(BlackJackPlayer):
     """create an computer player for black jack"""
 
-    num = 0
-
     def __init__(self) -> None:
-        """Initialize a computer player with name equal to "BOT + number of bot"
+        """Initialize a pokdeng computer player
+        with name is dealer
         """
-        ComputerPlayer.num += 1
-        self.name = 'BOT' + str(ComputerPlayer.num)
+        self.name = 'Dealer'
         self.hand = []
         self.money = self.get_initial_money()
         self.had_bet = 0
         self.played = None
+        self._screen = Screen()
 
     def draw_one_turn(self, game) -> None:
         """draw card until computer hand values more than 17"""
@@ -41,7 +39,7 @@ class ComputerPlayer(BlackJackPlayer):
 
 
 class Game(BaseGame):
-    """Entire game object"""
+    """BlackJackGame"""
 
     def __init__(self, name_list: list[str]) -> None:
         """Initialize a BlackJackGame with playerlist and dealer
@@ -53,7 +51,7 @@ class Game(BaseGame):
         """
         super().__init__(name_list)  # inherit previous initialize of basegame
         self.Player_list = [BlackJackPlayer(name) for name in name_list]
-        # create an player list
+        # create an player list that contain a BlackJackPlayer object
         self.dealer = ComputerPlayer()  # create an dealer player
 
     def show_every_player_card(self, show_len=False) -> None:
@@ -89,8 +87,8 @@ class Game(BaseGame):
     def finalize(self) -> None:
         """Finalize the game whether player get money or lose money
         """
-        printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
 
+        self.dealer.show_hand()
         # check dealer hand
         if not self.dealer.check_if_hand_valid():
             printcolor('[green]Dealer Burst[/green]:')
@@ -232,9 +230,9 @@ def main() -> None:
                     Game.clear_screen()
                     continue
             case '2':
-                Game.show_rule()  #showrule
+                Game.show_rule()  # showrule
             case '3':
-                for i in range(3, 0, -1):
+                for i in range(3, 0, -1):  #countdown
                     printcolor(f'Game will exit in {i}', end='\r')
                     sleep(1)
                 print()
