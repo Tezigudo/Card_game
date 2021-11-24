@@ -11,6 +11,8 @@ class Card:
     """ Card object"""
 
     def __init__(self) -> None:
+        """Initial a deck
+        """
         self.deck = self._create_deck()
         self.shuffle()
 
@@ -18,7 +20,9 @@ class Card:
     def _create_deck() -> list[str]:
         """this func create a deck using nested loop"""
         deck = []
+        # suit
         for suit in ('Clubs', 'Diamonds', 'Hearts', 'Spades'):
+            # val
             for val in range(1, 14):
                 match val:
                     case 1:

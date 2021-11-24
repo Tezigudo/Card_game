@@ -11,6 +11,7 @@ from rich.console import Console
 
 from BaseGame import BaseGame
 from Player.Player import PokDengPlayer
+from Player.Hand import Screen
 
 console = Console()
 
@@ -22,6 +23,7 @@ class ComputerPlayer(PokDengPlayer):
         self.money = self.get_initial_money()
         self.had_bet = 0
         self.played = None
+        self._screen = Screen()
 
     def draw_one_turn(self, game) -> None:
         if self.value < 6:
@@ -77,7 +79,7 @@ class Game(BaseGame):
                    '(Include himself)\n'
                    'then each player will choose whether to [cyan]draw or not[/cyan]\n'
                    'if [blue]Dealer POK[/blue] each player [red]will not able to Draw more[/red]\n'
-                   'but if player pok! Player will be judge whether [greem]gain[/green] or [red]lose[/red]\n')
+                   'but if player pok! Player will be judge whether [green]gain[/green] or [red]lose[/red]\n')
 
     def run(self):
         super().run()
@@ -96,16 +98,16 @@ def play() -> None:
     """
     Game.clear_screen()
     try:
-        money = float(input('Enter each player money: '))
+        money = float(input('Enter each player money: ').strip())
         PokDengPlayer.set_player_money(money)
         player_list = []
         print()
         while True:
-            name = input(f'Enter Player{len(player_list) + 1} name: ')
+            name = input(f'Enter Player{len(player_list) + 1} name: ').strip()
             player_list.append(name)
             print(f'now Playerlist: {player_list}')
             printcolor('[green]Y[/green]/[red]N[/red]', end=': ')
-            tmp = input()
+            tmp = input().strip()
             match tmp:
                 case 'N' | 'n':
                     break
@@ -129,18 +131,19 @@ def main() -> None:
         console.print('1.) PLay a game', style='blue')
         console.print('2.) Read rule and win condition', style='blue')
         console.print('3.) Quit', style='blue')
-        choice = input('Please choose(1/2/3): ')
+        choice = input('Please choose(1/2/3): ').strip()
         match choice:
             case '1':
                 play()
                 printcolor('Play again? ([green]Y[/green]/[red]N[/red]): ', end='')
-                tmp = input()
+                tmp = input().strip()
                 if tmp.upper() == 'Y':
                     play()
                 elif tmp.upper() == 'N':
                     continue
                 else:
                     print('Invalid input')
+
                     continue
             case '2':
                 Game.show_rule()
@@ -148,9 +151,11 @@ def main() -> None:
                 for i in range(3, 0, -1):
                     printcolor(f'Game will exit in {i}', end='\r')
                     sleep(1)
+                print()
                 break
             case _:
                 printcolor('[red]Invalid Input[/red]')
+        print()
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ __status__ = 'working'
 import os
 import sys
 from time import sleep
-
+# append back path to the current path
 sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
 from rich import print as printcolor
 from rich.console import Console
@@ -21,12 +21,21 @@ console = Console()
 
 class BaseGame:
     def __init__(self, name_list: list[str]) -> None:
+        """Initialize a game
+
+        Parameters
+        ----------
+        name_list : list[str]
+            list of player name
+        """
         self.Player_list = [Player(name) for name in name_list]
         # create an player list
         self.deck = Card()
         self.save = Save()
 
-    def report_status(self):
+    def report_status(self) -> None:
+        """report a current game status
+        """
         print('current Game status:')
         for player in self.Player_list:
             player.show_status()
@@ -42,11 +51,16 @@ class BaseGame:
     def deal_card(self) -> None:
         """deal card to all player"""
         for _ in range(2):
+            # dealer draw
             self.dealer.draw(self.deck.deck)
+            # player draw
             for player in self.now_player:
                 player.draw(self.deck.deck)
 
     def show_every_player_card(self) -> None:
+        """show every player card in game
+        """
+        # iterate each player in now player
         for player in self.now_player:
             console.print(f'{player}:', style='bold cyan')
             print(f'{player} hand are: {player.hand} ')
@@ -54,6 +68,9 @@ class BaseGame:
             print()
 
     def set_played(self) -> None:
+        """set status for player
+        whether have money to play in each turn
+        """
         for player in self.Player_list:
             player.played = player.money > 0
 
@@ -63,6 +80,8 @@ class BaseGame:
         return [player for player in self.Player_list if player.played]
 
     def reset(self) -> None:
+        """reset a entire game
+        """
         self.deck.reset()
         self.dealer.reset()
         for player in self.Player_list:
@@ -70,17 +89,26 @@ class BaseGame:
 
     @staticmethod
     def clear_screen() -> None:
-        """ clear a screen """
+        """clear a screen """
         os.system('clear')
 
     @property
-    def min_bet(self):
+    def min_bet(self) -> int:
+        """return a minbet of each player for each player in game
+
+        Returns
+        -------
+        int
+            min bet of each player
+        """
         return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5)
 
     def run(self) -> None:
-        time = 0
-        while len(self.now_player) > 1 or time == 0:
-            time += 1
+        """run an entire game and count what round is it
+        """
+        times = 0
+        while len(self.now_player) > 1 or times == 0:
+            times += 1
             printcolor(f'round{time}:')
             self.play()
             self.report_status()

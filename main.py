@@ -17,7 +17,7 @@ def main():
     printcolor('2 [blue]-->[/blue] [cyan]Pok-Deng[cyan]')
     printcolor('[red]q[/red][bold cyan]|[/bold cyan][red]Q[/red] [blue] to [red]EXIT[/red]')
     printcolor('Which choice: ', end='')
-    choice = input()
+    choice = input().strip()
     match choice:
         case '1':
             Black_Jack.main()

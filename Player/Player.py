@@ -6,7 +6,7 @@ __status__ = 'working'
 
 import sys
 from time import sleep
-
+from math import floor
 sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
 
 from rich import print as printcolor
@@ -36,6 +36,7 @@ class Player:
         self.had_bet = 0
         self.played = None
         self._screen = Screen()
+
 
     def __str__(self) -> str:
         """represent Player's name when printcolor player object"""
@@ -84,6 +85,10 @@ class Player:
     @classmethod
     def set_player_money(cls, money: int) -> None:
         """set all player money when"""
+        money = floor(money)
+        if money <= 0:
+            printcolor('[red]Money cant be less than or equal zero[/red]')
+            raise ValueError
         cls.initial_money = money
 
     def draw(self, deck, more=False) -> None:
@@ -97,9 +102,6 @@ class Player:
         """Show hand of player """
         printcolor(f'{self.name} had {self.hand}')
         console.print(f'value = {self.value}')
-
-        self._screen.show_hand(self)
-
 
     def same_card(self) -> bool:
         """ return if same card and deng """
@@ -160,6 +162,9 @@ class Player:
                     amount = round(amount)
                     printcolor(f'your amount was round to {amount}')
                     sleep(1)
+                if not amount:
+                    console.print(f'--Amount can not be zero--', style='red')
+                    raise ValueError
                 if amount < 0:
                     console.print(f'--Negative Amount--', style='red')
                     raise ValueError
@@ -234,11 +239,11 @@ class BlackJackPlayer(Player):
             printcolor(f'value = [red]{self.value}[/red]')
 
         if self.blackjack():
-            self._screen.painter.goto(-200, 190)
+            self._screen.painter.goto(-200, 160)
             self._screen.painter.pencolor('')
             self._screen.write_rainbow('BLACK JACK!')
         elif not self.check_if_hand_valid():
-            self._screen.painter.goto(-80, 180)
+            self._screen.painter.goto(-80, 150)
             self._screen.painter.pencolor('orange')
             self._screen.painter.write('BURST!', True, align="left", font=("Menlo", 40, "bold"))
 
@@ -263,7 +268,7 @@ class BlackJackPlayer(Player):
         while self.value <= 21:
             if not self.check_if_hand_valid() or self.blackjack():
                 break
-            ans = input('Want to draw? (Y/N): ')
+            ans = input('Want to draw? (Y/N): ').strip()
             if ans.upper() == 'Y':
                 self.draw(game.deck.deck, more=True)
             elif ans.upper() == 'N':
@@ -349,6 +354,26 @@ class PokDengPlayer(Player):
             self.draw(game.deck.deck, more=True)
         self.show_hand()
         self._screen.reset()
+
+    def show_hand(self) -> None:
+        super().show_hand()
+
+        self._screen.painter.pencolor('white')
+        self._screen.painter.goto(-300, 200)
+        self._screen.painter.write('Pok: ', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.pencolor('cyan')
+        self._screen.painter.write(self.pok() or 'None', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.pencolor('white')
+
+        self._screen.painter.pencolor('white')
+        self._screen.painter.goto(-300, 170)
+        self._screen.painter.write('Deng: ', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.pencolor('cyan')
+        self._screen.painter.write(self.deng() or 'None', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.pencolor('white')
+
+        self._screen.show_hand(self)
+
 
     def play_one_turn(self, game):
 

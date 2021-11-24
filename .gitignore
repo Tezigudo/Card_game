@@ -1,7 +1,11 @@
 __pycache__/
+Game/__pycache__/
 .idea/
 .vscode/
 .DS_Store
 .*
 *.pyc
 Myexperiment.ipynb
+Testing.py
+Player/__pycache__/
+Deck/__pycache__/

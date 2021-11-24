@@ -23,6 +23,8 @@ class ComputerPlayer(BlackJackPlayer):
     num = 0
 
     def __init__(self) -> None:
+        """Initialize a computer player with name equal to "BOT + number of bot"
+        """
         ComputerPlayer.num += 1
         self.name = 'BOT' + str(ComputerPlayer.num)
         self.hand = []
@@ -42,13 +44,27 @@ class Game(BaseGame):
     """Entire game object"""
 
     def __init__(self, name_list: list[str]) -> None:
-        super().__init__(name_list)
+        """Initialize a BlackJackGame with playerlist and dealer
+
+        Parameters
+        ----------
+        name_list : list[str]
+            list of player name
+        """
+        super().__init__(name_list)  # inherit previous initialize of basegame
         self.Player_list = [BlackJackPlayer(name) for name in name_list]
         # create an player list
         self.dealer = ComputerPlayer()  # create an dealer player
 
     def show_every_player_card(self, show_len=False) -> None:
-        """show every player card unblinded and show the length of it if show_len"""
+        """show every player card unblinded and show the length of it if show_len
+
+        Parameters
+        ----------
+        show_len : bool
+            if show len it will show number of card in player hand, by default False
+        """
+        # iterate over player in now player(money > 0)
         for player in self.now_player:
             player.show_unblind_card()
             if show_len:
@@ -56,7 +72,9 @@ class Game(BaseGame):
             printcolor()
 
     def draw_all_player(self) -> None:
-        """Draw card to all payer"""
+        """Draw card to all payer
+        """
+        # iterate over player in now player(money > 0)
         for player in self.now_player:
             self.show_every_player_card()
             self.dealer.show_unblind_card()
@@ -69,9 +87,11 @@ class Game(BaseGame):
         self.dealer.draw_one_turn(self)
 
     def finalize(self) -> None:
-        """Finalize the game whether player get money or lose money"""
+        """Finalize the game whether player get money or lose money
+        """
         printcolor(f'Dealer hand are {self.dealer.hand}\nDealer Score are {self.dealer.value}\n')
 
+        # check dealer hand
         if not self.dealer.check_if_hand_valid():
             printcolor('[green]Dealer Burst[/green]:')
             for player in self.now_player:
@@ -80,6 +100,7 @@ class Game(BaseGame):
                 else:
                     player.finalize(win='Draw')
 
+        # check whether dealer are blackjack
         elif self.dealer.blackjack():
             printcolor('Dealer Blackjack!')
             for player in self.now_player:
@@ -106,6 +127,8 @@ class Game(BaseGame):
 
     @staticmethod
     def show_rule() -> None:
+        """Show rule of the game
+        """
         print()
         printcolor('[b]Black Jack Rule[/b]')
         printcolor('Value of list if win are:\n'
@@ -128,15 +151,27 @@ class Game(BaseGame):
 
     @property
     def min_bet(self):
+        """return a minbet of each player for each player in game
+
+        Returns
+        -------
+        int
+            min bet of each player
+        """
         return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 5)
 
     def run(self):
-        super().run()
+        """run a game
+        """
+        super().run()  # inherit all method of run function in basegame
         try:
+            # winner is the now player in the list(now it have 1 player left)
+            # then it will be now_player[0]
             winner = self.now_player[0]
             console.print(f'{winner} win', style='green')
+            # save score into database
             self.save.add_score('Black_Jack', winner.name, 1)
-        except IndexError:
+        except IndexError:  # catching exception if all player loses then dealer will win
             console.print('Dealer win', style='green')
         printcolor('_____________________' * 2 + '\n')
 
@@ -147,16 +182,16 @@ def play() -> None:
     """
     Game.clear_screen()
     try:
-        money = float(input('Enter each player money: '))
-        BlackJackPlayer.set_player_money(money)
+        money = float(input('Enter each player money: ').strip())
+        BlackJackPlayer.set_player_money(money)  # set money for all BlackJackPlayer
         player_list = []
         print()
         while True:
-            name = input(f'Enter Player{len(player_list) + 1} name: ')
+            name = input(f'Enter Player{len(player_list) + 1} name: ').strip()
             player_list.append(name)
             print(f'now Playerlist: {player_list}')
             printcolor('[green]Y[/green]/[red]N[/red]', end=': ')
-            tmp = input()
+            tmp = input().strip()
             match tmp:
                 case 'N' | 'n':
                     break
@@ -165,9 +200,9 @@ def play() -> None:
                 case _:
                     print('Invalid input')
 
-        g = Game(player_list)
-        g.run()
-    except ValueError:
+        g = Game(player_list)  # creating a game object
+        g.run()  # run a game
+    except ValueError:  # catching exception that unnumeric input from player
         printcolor('[red]Invalid Input[/red]')
         sleep(1)
         play()
@@ -180,28 +215,33 @@ def main() -> None:
         console.print('1.) PLay a game', style='blue')
         console.print('2.) Read rule and win condition', style='blue')
         console.print('3.) Quit', style='blue')
-        choice = input('Please choose(1/2/3): ')
+        choice = input('Please choose(1/2/3): ').strip()
+        print()
         match choice:
             case '1':
                 play()
                 printcolor('Play again? ([green]Y[/green]/[red]N[/red]): ', end='')
-                tmp = input()
+                tmp = input().strip()
                 if tmp.upper() == 'Y':
                     play()
                 elif tmp.upper() == 'N':
+                    Game.clear_screen()
                     continue
                 else:
-                    print('Invalid input')
+                    printcolor('[red]Invalid input[/red]')
+                    Game.clear_screen()
                     continue
             case '2':
-                Game.show_rule()
+                Game.show_rule()  #showrule
             case '3':
                 for i in range(3, 0, -1):
                     printcolor(f'Game will exit in {i}', end='\r')
                     sleep(1)
+                print()
                 break
             case _:
                 printcolor('[red]Invalid Input[/red]')
+        print()
 
 
 if __name__ == '__main__':
