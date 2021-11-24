@@ -109,7 +109,7 @@ class BaseGame:
         times = 0
         while len(self.now_player) > 1 or times == 0:
             times += 1
-            printcolor(f'round{time}:')
+            printcolor(f'round{times}:')
             self.play()
             self.report_status()
             self.reset()
