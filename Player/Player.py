@@ -461,6 +461,19 @@ class PokDengPlayer(Player):
         return len({card.split()[0] for card in self.hand}) == 1 and 1 < len(self.hand) < 4
 
     def pok(self) -> int:
+        """check if player pok or not
+        player will pok when have number of card in hand equal 2
+        and value is 8 or 9
+
+        Returns
+        -------
+        int
+            if pok
+                8 will return 8
+                9 will return 9
+            0 otherwise (bool 0 is False)
+        """
+
         if len(self) == 2:
             if self.value == 8:
                 return 8
@@ -469,10 +482,14 @@ class PokDengPlayer(Player):
         return 0
 
     def deng(self) -> int:
-        """
-        This will return 2 if 2 deng
-                         3 if 3 deng
-                         0 otherwise
+        """check if player deng or not
+
+        Returns
+        -------
+        int
+            2 if 2 deng
+            3 if 3 deng
+            0 otherwise
         """
         if self.same_card():
             if len(self) == 2:
@@ -495,20 +512,28 @@ class PokDengPlayer(Player):
                     break
                 case _:
                     printcolor('[red]Invalid Input[/red] please try again')
+
         if ans.upper() == 'Y':
             self.draw(game.deck.deck, more=True)
+
         self.show_hand()
         self._screen.reset()
 
     def show_hand(self) -> None:
+        """ show hand of player
+        """
+
+        # inherit all method from show_hand() function from player
+        # is the terminal output
         super().show_hand()
 
+        # display a graphic output
+
         self._screen.painter.pencolor('white')
-        self._screen.painter.goto(-300, 200)
+        self._screen.painter.goto(-300, 200)  # move painter to top left
         self._screen.painter.write('Pok: ', True, align="left", font=("Menlo", 20, "bold"))
         self._screen.painter.pencolor('cyan')
         self._screen.painter.write(self.pok() or 'None', True, align="left", font=("Menlo", 20, "bold"))
-        self._screen.painter.pencolor('white')
 
         self._screen.painter.pencolor('white')
         self._screen.painter.goto(-300, 170)
@@ -517,10 +542,17 @@ class PokDengPlayer(Player):
         self._screen.painter.write(self.deng() or 'None', True, align="left", font=("Menlo", 20, "bold"))
         self._screen.painter.pencolor('white')
 
-        self._screen.show_hand(self)
+        self._screen.show_hand(self)  # show card in hand by graphic
 
 
     def play_one_turn(self, game) -> None:
+        """play one turn for PokdengPlayer
+
+        Parameters
+        ----------
+        game : Game object (PokDengGame)
+            this is from module PokDengGame
+        """
 
         print()
         console.print(f"{self}'current_val Turn:", style='blue')
@@ -544,12 +576,12 @@ class PokDengPlayer(Player):
         win : bool, optional
             win can be whatever bool or Draw, by default False
         """
-        if win == 'Draw':
+        if win == 'Draw':  # check if draw
             self.money += self.had_bet
             printcolor(f'{self} [b]Draw[/b]')
 
-        elif win:
-            multiple = self.deng() or 1
+        elif win:  # check if win
+            multiple = self.deng() or 1  # check if deng else multiple will be 1
             if self.deng():
                 printcolor(
                     f'{self} {multiple}Deng!\n'
@@ -557,10 +589,11 @@ class PokDengPlayer(Player):
                     f'and [green]got[/green] {self.had_bet}x{multiple} = {self.had_bet * multiple}')
             else:
                 printcolor(f'{self} win and [green]got[/green] {self.had_bet}')
+            # append money to player money
             self.money += self.had_bet * (multiple + 1)
 
         else:
-            multiple = dealer.deng()
+            multiple = dealer.deng()  # dealer multiple
             if dealer.deng():
                 printcolor(f'Dealer {multiple}Deng!\n'
                            f'Dealer hand are {dealer.hand} '
