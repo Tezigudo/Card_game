@@ -6,16 +6,22 @@ from math import ceil
 class Screen:
     def __init__(self) -> None:
         """ Initialize"""
-        # screen
-        self.screen = turtle.Screen()
-        self.screen.bgcolor('green')
-        self.screen.screensize(600, 420)
+        self.set_screen()
+        
         # painter
         self.painter = turtle.Turtle()
         self.painter.hideturtle()
         self.painter.penup()
+        self.painter.speed(0)
         # title
         turtle.title('Card game Graphic')
+
+    def set_screen(self):
+        self.screen = turtle.Screen()
+        self.screen.bgcolor('green')
+        self.screen.screensize(600, 420)
+
+    # def set_paointer
 
     def show_hand(self, player) -> None:
         """show a graphic hand
@@ -46,6 +52,7 @@ class Screen:
             turtle_card = turtle.Turtle()
             turtle_card.hideturtle()  # hide turtle
             turtle_card.penup()
+            turtle_card.speed(0)
             turtle_card.goto(x, y)  # make turtle go to each card position
             shape = f'Card_pic/{val if val.isdigit() else val[0]}{suit[0]}.gif'
             # add shape to each turtle to be that card curren value
