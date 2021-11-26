@@ -1,9 +1,10 @@
 __pycache__/
-Game/__pycache__/
+*/__pycache__/
 .idea/
 .vscode/
+*/.DS_Store
 .DS_Store
 Game/Myexperiment.ipynb
 Testing.py
-Player/__pycache__/
-Deck/__pycache__/
+# Player/__pycache__/
+# Deck/__pycache__/
