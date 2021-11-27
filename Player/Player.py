@@ -1,14 +1,13 @@
 
+from Hand import Screen
+from rich.console import Console
+from rich import print as printcolor
 import sys
 from time import sleep
 from math import floor
 # make the path is Card_Game
 sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
 
-from rich import print as printcolor
-from rich.console import Console
-
-from Hand import Screen
 
 console = Console()
 
@@ -202,6 +201,8 @@ class Player:
 
         Raises
         ------
+        Exception
+            if minbet equal zero
         ValueError
             if amount less than zero
         ValueError
@@ -216,10 +217,15 @@ class Player:
 
         printcolor(f'{self} amount is: {self.money}')
         while True:
-            printcolor('[bold yellow](All-IN | all in | all-in | ALL IN)[/bold yellow] to [blue]ALL-IN[/blue]')
+            printcolor(
+                '[bold yellow](All-IN | all in | all-in | ALL IN)[/bold yellow] to [blue]ALL-IN[/blue]')
             printcolor(
                 '[bold orange](MIN-BET | min bet | min-bet | MIN-BET)[/bold orange] to bet of value of [yellow]minbet[/yellow]')
             console.print(f'Please enter amount to bet ({minbet=})', end=': ')
+
+            # ERROR occur
+            if minbet == 0:  # if minbet equal zero exception must be raise
+                raise Exception('min bet cant be zero')
             amount = input().strip()
             try:
                 amount = float(amount)
@@ -237,8 +243,9 @@ class Player:
                     raise ValueError
 
                 elif amount < minbet:  # id amount less than minbet user must enter a valid money
-                    printcolor('please enter amount that [red]more than or equal[/red] to minbet')
-        
+                    printcolor(
+                        'please enter amount that [red]more than or equal[/red] to minbet')
+
                 elif amount > self.money:  # if amount more than player money user must enter a valid money
                     printcolor('you not have enough amount please try again')
                 else:
@@ -255,12 +262,14 @@ class Player:
 
                     case 'MIN-BET' | 'min bet' | 'min-bet' | 'MIN-BET':
                         self.bet_min(minbet)
-                        printcolor(f'{self} has bet [yellow]minimum of bet[/yellow]')
+                        printcolor(
+                            f'{self} has bet [yellow]minimum of bet[/yellow]')
                         printcolor(f'{self} have bet: {self.had_bet}')
                         return
 
                     case _:
-                        printcolor('[red]Invalid Input[/red] please try again:')
+                        printcolor(
+                            '[red]Invalid Input[/red] please try again:')
             print()
 
         self.bet(amount)  # bet the money
@@ -273,10 +282,19 @@ class Player:
         self.had_bet = 0
         self.hand = []
 
-    def show_status(self):
+    def show_status(self, x, y):
         """show status of player
         """
-        printcolor(f'{self}: {"[green]IN-GAME[/green]" if self.played else "[red]LOSES[/red]"}')
+        status, color = ('IN-GAME', 'green') if self.played else ('LOSES', 'red')
+        printcolor(
+            f'{self}: [{color}]{status}[/{color}]')
+        self._screen.painter.goto(x, y)
+        self._screen.painter.pencolor('white')
+        self._screen.painter.write(f'{self}: ', True, align="left",
+                           font=("Menlo", 24, "bold"))
+        self._screen.painter.pencolor(color if color != 'green' else 'white')
+        self._screen.painter.write(status, True, align="left",
+                           font=("Menlo", 24, "bold"))
 
 
 class BlackJackPlayer(Player):
@@ -339,7 +357,8 @@ class BlackJackPlayer(Player):
         elif not self.check_if_hand_valid():
             self._screen.painter.goto(-80, 150)
             self._screen.painter.pencolor('orange')
-            self._screen.painter.write('BURST!', True, align="left", font=("Menlo", 40, "bold"))
+            self._screen.painter.write(
+                'BURST!', True, align="left", font=("Menlo", 40, "bold"))
 
         self._screen.show_hand(self)  # show a player hand with graphic
 
@@ -384,7 +403,8 @@ class BlackJackPlayer(Player):
                 break
             ans = input('Want to draw? (Y/N): ').strip()
             if ans.upper() == 'Y':
-                self.draw(game.deck.deck, more=True)  # draw more card to player
+                # draw more card to player
+                self.draw(game.deck.deck, more=True)
             elif ans.upper() == 'N':
                 break
             else:
@@ -531,19 +551,22 @@ class PokDengPlayer(Player):
 
         self._screen.painter.pencolor('white')
         self._screen.painter.goto(-300, 200)  # move painter to top left
-        self._screen.painter.write('Pok: ', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.write(
+            'Pok: ', True, align="left", font=("Menlo", 20, "bold"))
         self._screen.painter.pencolor('cyan')
-        self._screen.painter.write(self.pok() or 'None', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.write(
+            self.pok() or 'None', True, align="left", font=("Menlo", 20, "bold"))
 
         self._screen.painter.pencolor('white')
         self._screen.painter.goto(-300, 170)
-        self._screen.painter.write('Deng: ', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.write(
+            'Deng: ', True, align="left", font=("Menlo", 20, "bold"))
         self._screen.painter.pencolor('cyan')
-        self._screen.painter.write(self.deng() or 'None', True, align="left", font=("Menlo", 20, "bold"))
+        self._screen.painter.write(
+            self.deng() or 'None', True, align="left", font=("Menlo", 20, "bold"))
         self._screen.painter.pencolor('white')
 
         self._screen.show_hand(self)  # show card in hand by graphic
-
 
     def play_one_turn(self, game) -> None:
         """play one turn for PokdengPlayer

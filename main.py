@@ -1,4 +1,3 @@
-
 from rich import print as printcolor
 from rich.console import Console
 
@@ -12,7 +11,8 @@ def main() -> None:
     printcolor('[blue]LOBBY[/blue]')
     printcolor('1 [blue]-->[/blue] [cyan]BlackJack[cyan]')
     printcolor('2 [blue]-->[/blue] [cyan]Pok-Deng[cyan]')
-    printcolor('[red]q[/red][bold cyan]|[/bold cyan][red]Q[/red] [blue] to [red]EXIT[/red]')
+    printcolor(
+        '[red]q[/red][bold cyan]|[/bold cyan][red]Q[/red] [blue] to [red]EXIT[/red]')
     printcolor('Which choice: ', end='')
     choice = input().strip()
     match choice:

@@ -7,6 +7,7 @@ class Save:
         """Initilize with all current history(database)
         """
         self.database = []
+        # open and load data into file
         with open('history.csv', 'r') as data_file:
             data = csv.DictReader(data_file)
             for each_data in data:
@@ -18,7 +19,7 @@ class Save:
         """
         with open('history.csv', 'w') as f:
             writer = csv.DictWriter(f, fieldnames=['game', 'name', 'wincount'])
-            writer.writeheader()
+            writer.writeheader()  # write header
 
             for data in self.database:
                 writer.writerow(data)
@@ -116,7 +117,7 @@ class Save:
         Parameters
         ----------
         game : str
-            str of game na e
+            str of game name
         name : str
             name of the player
         """
@@ -130,6 +131,24 @@ class Save:
                 del self.database[i]
                 self.update_database()
 
+    def game_history(self, game: str) -> dict:
+        """
+
+        Parameters
+        ----------
+        game : str
+            str of game name
+
+        Returns
+        -------
+        dict
+            a dict of player which key is name of player
+            and value us each wincount of player
+        """
+
+        return {data['name']: int(data['wincount']) for data in self.database
+                if data['game'] == game}
+
     def reset(self, *game: str) -> None:
         """reset progress of database of game in game list
         if user not entergame it will reset all the database and history.
@@ -137,5 +156,6 @@ class Save:
         if not game:
             self.database = []
         else:
-            self.database = [data for data in self.database if data['game'] not in game]
+            self.database = [
+                data for data in self.database if data['game'] not in game]
         self.update_database()

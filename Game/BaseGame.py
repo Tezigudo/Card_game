@@ -1,20 +1,16 @@
-__author__ = 'Preawpan Thamapipol(Godiez1)'
-__copyright__ = 'Godiez1 Github'
-__email__ = 'godjangg@gmail.com'
-__version__ = '1.0.0'
-__status__ = 'working'
+from database import Save
+from Player.Player import Player
+from Deck.Card import Card
+from rich.console import Console
+from rich import print as printcolor
+from Player.Hand import Screen
 
 import os
 import sys
 from time import sleep
 # append back path to the current path
 sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
-from rich import print as printcolor
-from rich.console import Console
 
-from Deck.Card import Card
-from Player.Player import Player
-from database import Save
 
 console = Console()
 
@@ -32,13 +28,25 @@ class BaseGame:
         # create an player list
         self.deck = Card()
         self.save = Save()
+        self._screen = Screen()
 
     def report_status(self) -> None:
         """report a current game status
         """
+
+        self._screen.painter.goto(-300, 260)  # goto top left
+        self._screen.painter.pencolor('cyan')
+        # show a player name graphic
+        self._screen.painter.write('Current Game status:', True, align="left",
+                                   font=("Menlo", 28, "bold"))
+        curr_x, curr_y = -300, 220
+        # terminal output
         print('current Game status:')
         for player in self.Player_list:
-            player.show_status()
+            player.show_status(curr_x, curr_y)
+            curr_y -= 40
+        sleep(2)
+        self._screen.reset()
 
     def call_all(self) -> None:
         """call all Player"""

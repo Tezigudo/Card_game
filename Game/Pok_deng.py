@@ -19,6 +19,7 @@ console = Console()
 class ComputerPlayer(PokDengPlayer):
     """create an computer player for PokDeng
     """
+
     def __init__(self) -> None:
         """Initialize a pokdeng computer player
         with name is dealer
@@ -45,6 +46,7 @@ class ComputerPlayer(PokDengPlayer):
 class Game(BaseGame):
     """PokDengGame
     """
+
     def __init__(self, name_list: list[str]) -> None:
         """Initialize a PokdengGame object
 
@@ -69,7 +71,7 @@ class Game(BaseGame):
             player.play_one_turn(self)
 
     @property
-    def min_bet(self):
+    def min_bet(self) -> int:
         """min bet of each player in the game
 
         Returns
@@ -79,13 +81,13 @@ class Game(BaseGame):
         """
         return round(sum(player.money for player in self.Player_list) / len(self.Player_list) / 7)
 
-    def finalize(self):
+    def finalize(self) -> None:
         """Finalize each player in now player(player that money > 0)
         """
         for player in self.now_player:
             player.finalize(self.dealer, win=player.if_win(self.dealer))
 
-    def play(self):
+    def play(self) -> None:
         """play one PokDeng game
         """
         self.set_played()
@@ -99,6 +101,31 @@ class Game(BaseGame):
         self.set_played()
         sleep(3)
         self.clear_screen()
+
+    def show_game_wincount(self) -> None:
+        """show wincount of each player in PokDengGame
+        """
+        name_and_wincount_dict = self.save.game_history('Pok_Deng')
+
+        self._screen.painter.goto(-300, 260)  # goto top left
+        # show a player name graphic
+        self._screen.painter.pencolor('cyan')
+        self._screen.painter.write('PokDengGame Score stats', True, align="left",
+                                   font=("Menlo", 30, "bold"))
+        self._screen.painter.goto(-300, 200)
+        self._screen.painter.pencolor('white')
+        self._screen.painter.write('name        wincount', True, align="left",
+                                   font=("Menlo", 28, "bold"))
+
+        curr_x, curr_y = -300, 160
+        self._screen.painter.pencolor('cyan')
+        for name, win_count in name_and_wincount_dict.items():
+            self._screen.painter.goto(curr_x, curr_y)
+            self._screen.painter.write(f'{name:<6}     {win_count:>6}', True, align="left",
+                                       font=("Menlo", 28, "bold"))
+            curr_y -= 35
+        sleep(2)
+        self._screen.reset()
 
     @staticmethod
     def show_rule() -> None:
@@ -127,7 +154,8 @@ class Game(BaseGame):
             # then it will be now_player[0]
             winner = self.now_player[0]
             console.print(f'{winner} win', style='green')
-            self.save.add_score('Pok_Deng', winner.name, 1)  # save score into database
+            # save score into database
+            self.save.add_score('Pok_Deng', winner.name, 1)
         except IndexError:  # catching exception if all player loses then dealer will win
             console.print('Dealer win', style='green')
         printcolor('_____________________' * 2 + '\n')
@@ -140,7 +168,8 @@ def play() -> None:
     Game.clear_screen()
     try:
         money = float(input('Enter each player money: ').strip())
-        PokDengPlayer.set_player_money(money)  # set money for all PokDengPlayer
+        # set money for all PokDengPlayer
+        PokDengPlayer.set_player_money(money)
         player_list = []
         print()
         while True:
@@ -171,12 +200,14 @@ def main() -> None:
         console.print('Welcome to Pok-Deng game', style='blue')
         console.print('1.) PLay a game', style='blue')
         console.print('2.) Read rule and win condition', style='blue')
-        console.print('3.) Quit', style='blue')
+        console.print('3.) see wincount', style='blue')
+        console.print('4.) Quit', style='blue')
         choice = input('Please choose(1/2/3): ').strip()
         match choice:
             case '1':
                 play()
-                printcolor('Play again? ([green]Y[/green]/[red]N[/red]): ', end='')
+                printcolor(
+                    'Play again? ([green]Y[/green]/[red]N[/red]): ', end='')
                 tmp = input().strip()
                 if tmp.upper() == 'Y':
                     play()
@@ -184,11 +215,15 @@ def main() -> None:
                     continue
                 else:
                     print('Invalid input')
-
                     continue
+
             case '2':
                 Game.show_rule()  # showrule
             case '3':
+                gam = Game(['God'])
+                gam.show_game_wincount()
+
+            case '4':
                 for i in range(3, 0, -1):  # countdown
                     printcolor(f'Game will exit in {i}', end='\r')
                     sleep(1)
