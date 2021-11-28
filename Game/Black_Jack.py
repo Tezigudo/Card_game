@@ -2,16 +2,16 @@
 This is PokDeng Game that contain ComputerPlayer and Game
 """
 
-from Player.Hand import Screen
-from Player.Player import BlackJackPlayer
 from time import sleep
 
 from rich import print as printcolor
 from rich.console import Console
 
 import BaseGame
-BaseGame = BaseGame.BaseGame
+from Player.Hand import Screen
+from Player.Player import BlackJackPlayer
 
+BaseGame = BaseGame.BaseGame
 
 console = Console()
 

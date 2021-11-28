@@ -109,7 +109,7 @@ class Save:
             amount of wincount that user want to add
         """
         data = self.load(game, name)
-        self.save(game, name, data['wincount']+amount)
+        self.save(game, name, data['wincount'] + amount)
 
     def delete(self, game: str, name: str) -> None:
         """delete progess for game for name

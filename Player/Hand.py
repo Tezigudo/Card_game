@@ -1,6 +1,6 @@
-from time import sleep
 import turtle
 from math import ceil
+from time import sleep
 
 
 class Screen:
@@ -52,7 +52,7 @@ class Screen:
 
         hands = []
         # card must be on a middle of screen
-        x, y = -50*ceil(len(player.hand)/2+1), -60
+        x, y = -50 * ceil(len(player.hand) / 2 + 1), -60
         for card in player.hand:
             val, suit = card.split(' of ')
             # create turtle object that illustrated each card of player

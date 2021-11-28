@@ -10,8 +10,8 @@ from rich import print as printcolor
 from rich.console import Console
 
 from BaseGame import BaseGame
-from Player.Player import PokDengPlayer
 from Player.Hand import Screen
+from Player.Player import PokDengPlayer
 
 console = Console()
 

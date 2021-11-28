@@ -1,16 +1,17 @@
-from database import Save
-from Player.Player import Player
-from Deck.Card import Card
-from rich.console import Console
-from rich import print as printcolor
-from Player.Hand import Screen
-
 import os
 import sys
 from time import sleep
+
+from rich import print as printcolor
+from rich.console import Console
+
+from Deck.Card import Card
+from Player.Hand import Screen
+from Player.Player import Player
+from database import Save
+
 # append back path to the current path
 sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
-
 
 console = Console()
 
@@ -98,7 +99,10 @@ class BaseGame:
     @staticmethod
     def clear_screen() -> None:
         """clear a screen """
-        os.system('clear')
+        # if user run in window or linux command will equal cls
+        # if in mac command will be clear
+        command = 'cls' if os.name in ('nt', 'dos') else 'clear'
+        os.system(command)
 
     @property
     def min_bet(self) -> int:

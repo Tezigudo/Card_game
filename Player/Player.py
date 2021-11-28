@@ -1,13 +1,14 @@
+import sys
+from math import floor
+from time import sleep
+
+from rich import print as printcolor
+from rich.console import Console
 
 from Hand import Screen
-from rich.console import Console
-from rich import print as printcolor
-import sys
-from time import sleep
-from math import floor
+
 # make the path is Card_Game
 sys.path.insert(1, '/'.join(sys.path[0].split('/')[:-1]))
-
 
 console = Console()
 
@@ -291,10 +292,10 @@ class Player:
         self._screen.painter.goto(x, y)
         self._screen.painter.pencolor('white')
         self._screen.painter.write(f'{self}: ', True, align="left",
-                           font=("Menlo", 24, "bold"))
+                                   font=("Menlo", 24, "bold"))
         self._screen.painter.pencolor(color if color != 'green' else 'white')
         self._screen.painter.write(status, True, align="left",
-                           font=("Menlo", 24, "bold"))
+                                   font=("Menlo", 24, "bold"))
 
 
 class BlackJackPlayer(Player):
