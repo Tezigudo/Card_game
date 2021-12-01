@@ -237,7 +237,7 @@ def main() -> None:
         console.print('2.) Read rule and win condition', style='blue')
         console.print('3.) see wincount', style='blue')
         console.print('4.) Quit', style='blue')
-        choice = input('Please choose(1/2/3): ').strip()
+        choice = input('Please choose(1/2/3/4): ').strip()
         print()
         match choice:
             case '1':

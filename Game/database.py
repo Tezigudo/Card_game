@@ -25,7 +25,7 @@ class Save:
                 writer.writerow(data)
 
     @staticmethod
-    def check_valid_game_and_nickname(data, game: str, name: str) -> bool:
+    def check_valid_game_and_nickname(data: dict, game: str, name: str) -> bool:
         """check whether game and name is valid
 
         Parameters
