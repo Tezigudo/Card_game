@@ -62,7 +62,7 @@ This is requirement for this project
 
 ## Program design
 
-### [This Project UML class diagram here](Uml_Card_Game_Project.pdf)
+### [This Project UML class diagram here](Uml_Card_Game_Project.png)
 
 All my class that I am going to implement are
 
