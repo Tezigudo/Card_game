@@ -1,7 +1,3 @@
-"""
-This is PokDeng Game that contain ComputerPlayer and Game
-"""
-
 from time import sleep
 
 from rich import print as printcolor
@@ -223,7 +219,7 @@ def play() -> None:
 
         g = Game(player_list)  # creating a game object
         g.run()  # run a game
-    except ValueError:  # catching exception that unnumeric input from player
+    except ValueError:  # catching exception that non-numeric input from player
         printcolor('[red]Invalid Input[/red]')
         sleep(1)
         play()

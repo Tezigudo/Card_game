@@ -1,4 +1,3 @@
-
 from time import sleep
 
 from rich import print as printcolor
