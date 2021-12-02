@@ -146,8 +146,9 @@ class Save:
             and value us each wincount of player
         """
 
-        return {data['name']: int(data['wincount']) for data in self.database
-                if data['game'] == game}
+        game_history = {data['name']: int(data['wincount']) for data in self.database
+                        if data['game'] == game}
+        return dict(sorted(game_history.items(), key=lambda x: x[1], reverse=True))
 
     def reset(self, *game: str) -> None:
         """reset progress of database of game in game list

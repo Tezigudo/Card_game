@@ -606,7 +606,7 @@ class PokDengPlayer(Player):
 
         elif win:  # check if win
             multiple = self.deng() or 1  # check if deng else multiple will be 1
-            if self.deng():
+            if  self.deng():
                 printcolor(
                     f'{self} {multiple}Deng!\n'
                     f'{self} hand are {self.hand} '

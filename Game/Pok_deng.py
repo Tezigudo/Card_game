@@ -1,8 +1,3 @@
-__author__ = 'Preawpan Thamapipol(Godiez1)'
-__copyright__ = 'Godiez1 Github'
-__email__ = 'godjangg@gmail.com'
-__version__ = '1.0.1'
-__status__ = 'working'
 
 from time import sleep
 
