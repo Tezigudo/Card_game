@@ -14,6 +14,11 @@ This project was made for computer Programming I Acedemic year 2021 by Preawpan 
 
 ## Project overview and features
 
+### Main features
+
+- play BlackJack
+- play Pokdeng
+
 At first Program will ask user what game to play whether BlackJack or PokDeng as picture below
 
 ![start_game](md_pic/Init_main.png)
@@ -105,10 +110,10 @@ In my card Game Project have 9 main file which are
 4. [BaseGame.py](Game/BaseGame.py): module file for anygame that contain `BaseGame` class
 
 5. [Black_Jack.py](Game/Black_Jack.py): sub file that are one `BlackJack` entile game which
-   contain `Black_Jack.ComputerPlayer` and `Black_Jack.Game` class and main function for run a entire`BlackJack` game
+   contain `Black_Jack.ComputerPlayer` and `Black_Jack.Game` class and main function for run a entire `BlackJack` game
 
 6. [Pok_Deng.py](Game/Pok_deng.py): sub file that are one `PokDeng` entile game which contain `Pok_Deng.ComputerPlayer`
-   and `Pok_Deng.Game` class and main function for run a entire`Pok Deng` game
+   and `Pok_Deng.Game` class and main function for run a entire `Pok Deng` game
 
 7. [database.py](Game/database.py): module file that contain `Save` class
 

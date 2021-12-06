@@ -316,7 +316,7 @@ class BlackJackPlayer(Player):
             match val:
                 case 'Ace':
                     ace_count += 1
-                case 'King' | 'Queen' | 'Jack' | 'King':
+                case 'King' | 'Queen' | 'Jack':
                     current_val += 10
                 case _:
                     current_val += int(val)
