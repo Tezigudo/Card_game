@@ -1,3 +1,5 @@
+""" do a main file"""
+
 from rich import print as printcolor
 from rich.console import Console
 
