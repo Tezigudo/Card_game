@@ -10,6 +10,9 @@ the winner and update score into CSV file.
 
 This project was made for computer Programming I Acedemic year 2021 by Preawpan Thamapipol
 
+* here is the overview of this project  
+<https://youtu.be/nXyqYJq4f0w>
+
 ---
 
 ## Project overview and features
