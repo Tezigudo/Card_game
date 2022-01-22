@@ -4,8 +4,6 @@ from time import sleep
 
 
 class Screen:
-    """Screen class."""
-
     def __init__(self) -> None:
         """ Initialize"""
         self.set_screen()
@@ -35,7 +33,6 @@ class Screen:
         player : Player object
             Player object whether is PokDengPlayer or BlackJackPlayer
         """
-
         self.painter.penup()
         self.painter.goto(-300, 260)  # goto top left
         self.painter.pencolor('cyan')
@@ -92,7 +89,6 @@ class Screen:
         text : str
             text that user want to write on a screen(rainbow color)
         """
-
         color = ['purple', 'indigo', 'blue', 'cyan', 'yellow', 'orange', 'red']
         now = 0
         for alp in text:  # iterate over each alphabet in text
