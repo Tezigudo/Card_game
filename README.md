@@ -1,4 +1,5 @@
 # Card Game
+This project was made for computer Programming I Acedemic year 2021 by Preawpan Thamapipol
 
 ## About this project
 
@@ -7,8 +8,6 @@ player's name then a list of player object will be created by name in that list.
 untill has only one player who has money more than 0. in the other hand,all people except that guy have no money
 anymore (less than 0). When a game start the graphical output will show each player hand. At the end, The game will show
 the winner and update score into CSV file.
-
-This project was made for computer Programming I Acedemic year 2021 by Preawpan Thamapipol
 
 * here is the overview of this project  
 <https://youtu.be/nXyqYJq4f0w>
